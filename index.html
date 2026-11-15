@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TabTape — Any tab's audio, on tape.</title>
+<meta name="description" content="TabTape records the sound of a single tab and saves it as MP3 or WAV. Click the icon, press Record, and the file is on your disk when you stop. No account, no cloud, no upload.">
+<link rel="icon" href="icons/icon128.png">
+<style>
+:root{
+  --accent:#e5484d;
+  --accent-2:#8f1d22;
+  --bg:#fcf8f8;
+  --surface:#ffffff;
+  --ink:#2a2023;
+  --body:#5c565a;
+  --muted:#8d878c;
+  --line:#eee2e3;
+  --tint:#fdf1f1;
+  --tint:color-mix(in srgb, var(--accent) 8%, #ffffff);
+  --tint-strong:#fbe4e4;
+  --tint-strong:color-mix(in srgb, var(--accent) 14%, #ffffff);
+  --shadow:0 18px 45px rgba(42,32,35,.10);
+  --shadow-soft:0 8px 24px rgba(42,32,35,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{
+  margin:0;
+  color:var(--body);
+  background:radial-gradient(900px 420px at 100% -8%, color-mix(in srgb, var(--accent-2) 12%, #ffffff) 0%, rgba(255,255,255,0) 70%), var(--bg);
+  font-family:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{display:block;max-width:100%}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+button,select{font:inherit}
+[hidden]{display:none !important}
+::selection{background:color-mix(in srgb, var(--accent) 22%, #ffffff);color:var(--ink)}
+:focus-visible{outline:2px solid color-mix(in srgb, var(--accent) 55%, #ffffff);outline-offset:3px}
+.wrap{width:min(1120px, calc(100% - 40px));margin:0 auto}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.topbar-inner{display:flex;align-items:center;gap:18px;height:70px}
+.brand{display:flex;align-items:center;gap:11px;color:var(--ink);font-size:16px;font-weight:750;letter-spacing:-.015em;white-space:nowrap}
+.brand:hover{text-decoration:none}
+.brand img{width:32px;height:32px;border-radius:9px;background:#fff;border:1px solid var(--line)}
+.nav-links{display:flex;align-items:center;gap:20px;margin-left:auto;font-size:13.5px;font-weight:650}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--accent);text-decoration:none}
+.top-actions{display:flex;align-items:center;gap:9px;margin-left:auto}
+.nav-links + .top-actions{margin-left:0}
+.lang{
+  appearance:none;-webkit-appearance:none;
+  border:1px solid var(--line);
+  background-color:#fff;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238d878c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  background-size:12px;
+  color:var(--ink);
+  border-radius:10px;
+  padding:9px 32px 9px 11px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  max-width:150px;
+}
+.lang:hover{border-color:color-mix(in srgb, var(--accent) 26%, var(--line))}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 20px;border-radius:12px;border:1px solid transparent;font-weight:700;font-size:14.5px;line-height:1.2;transition:transform .18s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 12px 26px color-mix(in srgb, var(--accent) 26%, transparent)}
+.btn-primary:hover{background:color-mix(in srgb, var(--accent) 90%, var(--ink));box-shadow:0 15px 30px color-mix(in srgb, var(--accent) 30%, transparent)}
+.btn-secondary{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn-secondary:hover{border-color:color-mix(in srgb, var(--accent) 28%, var(--line))}
+.site-footer{margin-top:48px;border-top:1px solid var(--line);background:rgba(255,255,255,.8);padding:32px 0}
+.footer-inner{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center;justify-content:space-between}
+.footer-brand{display:flex;align-items:center;gap:11px;color:var(--ink);font-size:14px;font-weight:700}
+.footer-brand img{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.footer-brand .copy{display:block;color:var(--muted);font-size:12px;font-weight:500;line-height:1.4;margin-top:1px}
+.footer-links{display:flex;flex-wrap:wrap;gap:9px 18px;align-items:center;font-size:13px;font-weight:600}
+.footer-links a{color:var(--muted)}
+.footer-links a:hover{color:var(--accent);text-decoration:none}
+@media (max-width:900px){
+  .nav-links{display:none}
+  .topbar-inner{height:62px}
+  .wrap{width:calc(100% - 32px)}
+}
+@media (max-width:560px){
+  .brand span{display:none}
+  .lang{max-width:124px}
+  .site-footer{padding:26px 0}
+  .footer-inner{align-items:flex-start;flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none !important;animation:none !important}
+}
+
+.hero{position:relative;overflow:hidden;padding:66px 0 44px}
+.hero::before{content:"";position:absolute;right:-160px;top:-220px;width:780px;height:780px;border-radius:50%;background:radial-gradient(circle, color-mix(in srgb, var(--accent-2) 20%, rgba(255,255,255,0)) 0%, rgba(255,255,255,0) 68%);pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.18fr) minmax(300px,.82fr);gap:54px;align-items:center}
+.hero-copy{min-width:0}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;border:1px solid color-mix(in srgb, var(--accent) 22%, var(--line));background:color-mix(in srgb, var(--accent) 7%, #ffffff);color:var(--accent);font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.hero h1{margin:16px 0 14px;color:var(--ink);font-size:clamp(36px,4.9vw,58px);line-height:1.04;letter-spacing:-.04em;font-weight:800;overflow-wrap:anywhere}
+.tagline{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 20px}
+.tagline span{padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.8);color:var(--muted);font-size:12.5px;font-weight:650}
+.lead{max-width:680px;margin:0 0 22px;color:var(--body);font-size:17px;line-height:1.72}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:650}
+.badge svg{color:var(--accent)}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.micro{margin:16px 0 0;color:var(--muted);font-size:12.5px;font-weight:550}
+.app-card{position:relative;overflow:hidden;padding:32px 28px 24px;border:1px solid var(--line);border-radius:28px;background:linear-gradient(160deg,#ffffff 0%, color-mix(in srgb, var(--accent) 7%, #ffffff) 100%);box-shadow:var(--shadow);text-align:center}
+.app-card-glow{position:absolute;width:220px;height:220px;left:50%;top:-120px;transform:translateX(-50%);border-radius:50%;background:color-mix(in srgb, var(--accent-2) 20%, rgba(255,255,255,0));filter:blur(8px)}
+.app-icon{position:relative;width:108px;height:108px;margin:6px auto 18px;padding:11px;border-radius:26px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 30px rgba(42,32,35,.14)}
+.app-icon img{width:100%;height:100%;object-fit:contain;border-radius:18px}
+.app-name{position:relative;color:var(--ink);font-size:23px;font-weight:800;letter-spacing:-.02em}
+.app-sub{position:relative;margin:4px 0 20px;color:var(--muted);font-size:12.5px;font-weight:600}
+.app-points{position:relative;display:grid;gap:8px;text-align:left}
+.app-points div{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.72);color:var(--body);font-size:13px;line-height:1.45}
+.app-points svg{flex:none;margin-top:2px;color:var(--accent)}
+.app-footer{position:relative;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:650}
+.app-footer svg{color:var(--accent)}
+.block{padding:56px 0}
+.section-head{max-width:720px;margin:0 0 26px}
+.kicker{margin:0 0 9px;color:var(--accent);font-size:11.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.section-head h2,.support-copy h2{margin:0 0 10px;color:var(--ink);font-size:clamp(27px,3.2vw,37px);line-height:1.15;letter-spacing:-.025em;font-weight:800}
+.section-head p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.65}
+.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.feature{padding:21px 21px 23px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow-soft);transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease}
+.feature:hover{transform:translateY(-2px);border-color:color-mix(in srgb, var(--accent) 22%, var(--line));box-shadow:0 14px 32px rgba(42,32,35,.09)}
+.feature .num{display:inline-flex;align-items:center;justify-content:center;width:33px;height:33px;margin-bottom:13px;border-radius:10px;background:var(--tint);color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.04em}
+.feature p{margin:0;color:var(--body);font-size:14px;line-height:1.66}
+.more-panel{margin-top:15px;padding:22px 24px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow-soft)}
+.more-panel h3{margin:0 0 13px;color:var(--ink);font-size:13.5px;font-weight:750}
+.more-list{display:grid;grid-template-columns:1fr 1fr;gap:9px 28px;margin:0;padding:0;list-style:none}
+.more-list li{position:relative;padding-left:19px;color:var(--body);font-size:13.5px;line-height:1.55}
+.more-list li::before{content:"";position:absolute;left:1px;top:.6em;width:7px;height:7px;border-radius:2px;background:var(--accent-2)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.plan{padding:26px 27px;border:1px solid var(--line);border-radius:21px;background:#fff;box-shadow:var(--shadow-soft)}
+.plan.premium{border-color:color-mix(in srgb, var(--accent) 25%, var(--line));background:linear-gradient(160deg,#ffffff 0%, color-mix(in srgb, var(--accent) 8%, #ffffff) 100%);box-shadow:var(--shadow)}
+.plan-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.plan-top h3{margin:0;color:var(--ink);font-size:20px;font-weight:780;letter-spacing:-.02em}
+.plan-mark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:9px}
+.plan-mark.free{background:var(--tint);color:var(--accent)}
+.plan-mark.premium{background:var(--accent);color:#fff}
+.plan p{margin:0;color:var(--body);font-size:14.5px;line-height:1.72}
+.plan-note{margin-top:15px;padding:14px 17px;border:1px solid color-mix(in srgb, var(--accent) 16%, var(--line));border-radius:13px;background:var(--tint);color:var(--body);font-size:13px;line-height:1.65}
+.privacy-panel{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:34px;align-items:center;padding:42px 44px;border:1px solid color-mix(in srgb, var(--accent) 16%, var(--line));border-radius:28px;background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, #ffffff) 0%, #ffffff 62%, color-mix(in srgb, var(--accent-2) 12%, #ffffff) 100%);box-shadow:var(--shadow)}
+.panel-icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;margin-bottom:15px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--accent);box-shadow:var(--shadow-soft)}
+.privacy-panel h2{margin:0 0 10px;color:var(--ink);font-size:clamp(26px,3vw,35px);line-height:1.15;letter-spacing:-.025em;font-weight:800}
+.panel-lead{max-width:620px;margin:0 0 18px;color:var(--body);font-size:15px;line-height:1.7}
+.points{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.point{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.78);color:var(--ink);font-size:12.5px;font-weight:650}
+.point svg{color:var(--accent)}
+.text-link{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-size:13.5px;font-weight:750}
+.text-link:hover{text-decoration:none;gap:10px}
+.privacy-visual{position:relative;min-height:250px;display:grid;place-items:center}
+.ring{position:absolute;border-radius:50%;border:1px solid color-mix(in srgb, var(--accent) 20%, #ffffff)}
+.ring.one{width:190px;height:190px}
+.ring.two{width:260px;height:260px;opacity:.58}
+.ring.three{width:320px;height:320px;opacity:.32}
+.lock-badge{position:relative;display:grid;place-items:center;width:88px;height:88px;border-radius:26px;background:#fff;border:1px solid var(--line);color:var(--accent);box-shadow:var(--shadow)}
+.lock-badge svg{width:36px;height:36px}
+.support-card{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:34px;align-items:center;padding:40px 44px;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow-soft)}
+.support-copy .kicker{margin-bottom:10px}
+.support-copy p{max-width:640px;margin:0 0 12px;color:var(--body);font-size:14.5px;line-height:1.75}
+.support-copy p:last-of-type{margin-bottom:16px}
+.disclaimer{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.kofi{display:flex;flex-direction:column;align-items:center;gap:12px;padding:26px 22px;border:1px solid color-mix(in srgb, var(--accent) 16%, var(--line));border-radius:20px;background:linear-gradient(160deg, color-mix(in srgb, var(--accent) 7%, #ffffff) 0%, #ffffff 100%);text-align:center}
+.kofi-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--accent);box-shadow:var(--shadow-soft)}
+.kofi p{margin:0;color:var(--body);font-size:13px;line-height:1.6}
+.kofi-btn{width:100%}
+.kofi-note{margin:0;color:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+@media (max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:38px}
+  .app-card{max-width:460px;margin:0 auto;width:100%}
+  .feature-grid{grid-template-columns:1fr 1fr}
+  .privacy-panel,.support-card{grid-template-columns:1fr;gap:26px}
+  .privacy-visual{min-height:210px}
+}
+@media (max-width:760px){
+  .hero{padding:44px 0 30px}
+  .hero h1{font-size:clamp(33px,9vw,46px)}
+  .lead{font-size:16px}
+  .block{padding:42px 0}
+  .feature-grid{grid-template-columns:1fr}
+  .plans{grid-template-columns:1fr}
+  .more-list{grid-template-columns:1fr}
+  .privacy-panel,.support-card{padding:28px 22px;border-radius:22px}
+  .privacy-visual{display:none}
+  .cta-row .btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/icon128.png" alt="" width="32" height="32"><span>TabTape</span></a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#features" id="i-nav-features">Features</a>
+      <a href="#plans" id="i-nav-plans">Free &amp; Pro</a>
+      <a href="#privacy" id="i-nav-privacy">Privacy</a>
+      <a href="#support" id="i-nav-support">Support</a>
+    </nav>
+    <div class="top-actions">
+      <select class="lang" id="i-lang" aria-label="Language"><option value="en">English</option><option value="zh">简体中文</option><option value="ja">日本語</option><option value="de">Deutsch</option><option value="es">Español</option><option value="fr">Français</option></select>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow" id="i-eyebrow">Chrome &amp; Edge extension</span>
+        <h1 id="i-h1">Any tab's audio, on tape.</h1>
+        <div class="tagline" id="i-tagline"><span>One-tab recorder for MP3 and WAV</span></div>
+        <p class="lead" id="i-intro">TabTape records the sound of a single tab — a lecture, a stream, a song that will not be there tomorrow — and saves it as MP3 or WAV. Click the icon, press Record, and the file is on your disk when you stop. The tab keeps playing out loud the whole time. No account, no cloud, no upload, and no timer counting down to a purchase decision.</p>
+        <div class="badges" id="i-badges"><span class="badge"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>Runs locally</span><span class="badge"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c5 0 9 4.5 9 7a11.7 11.7 0 0 1-2.3 3.6"/><path d="M6.2 6.2C4.2 7.7 3 9.7 3 12c0 2.5 4 7 9 7a11 11 0 0 0 4.2-.8"/></svg>No tracking</span><span class="badge"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>Chrome &amp; Edge</span></div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://annmax1983.com/extensions/tabtape" target="_blank" rel="noopener"><span id="i-get-label">Get the extension</span><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-secondary" href="privacy-policy.html"><span id="i-privacy-label">Privacy policy</span></a>
+        </div>
+        <p class="micro" id="i-micro">Free + Pro · Chrome &amp; Edge</p>
+      </div>
+      <aside class="app-card" aria-label="TabTape">
+        <div class="app-card-glow" aria-hidden="true"></div>
+        <div class="app-icon"><img src="icons/icon128.png" alt="TabTape icon" width="108" height="108"></div>
+        <div class="app-name" id="i-app-name">TabTape</div>
+        <div class="app-sub" id="i-app-sub">Free + Pro</div>
+        <div class="app-points" id="i-app-points"><div><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Local recordings</span></div><div><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>No account</span></div><div><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Optional licence</span></div></div>
+        <div class="app-footer"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg><span id="i-app-browsers">Chrome &amp; Edge</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">01</p>
+        <h2 id="i-feat-title">Everything it does</h2>
+        <p id="i-feat-lead">The core features at a glance.</p>
+      </div>
+      <div class="feature-grid" id="i-features">
+<article class="feature"><span class="num">01</span><p>Records the audio of one tab. Other tabs, system sounds and microphone input stay out of the file.</p></article>
+<article class="feature"><span class="num">02</span><p>The tab keeps playing out loud while it records, so you can follow what you are capturing.</p></article>
+<article class="feature"><span class="num">03</span><p>Constant memory: audio is encoded in one-second blocks and written to disk as it arrives, so length is limited by free disk space, not RAM.</p></article>
+<article class="feature"><span class="num">04</span><p>MP3 at 128 or 64 kbps, or uncompressed WAV when the samples have to stay untouched.</p></article>
+<article class="feature"><span class="num">05</span><p>Auto-save: the finished file downloads to Downloads/TabTape/ and is kept in the built-in library.</p></article>
+<article class="feature"><span class="num">06</span><p>Crash-safe: if the browser closes mid-recording, the library offers to recover what already reached disk.</p></article>
+      </div>
+      <div class="more-panel" id="i-more-panel">
+        <h3 id="i-more-title">Also included</h3>
+        <ul class="more-list" id="i-more"><li>Unlimited length with Pro — a two-hour lecture is one file, not a pile of segments to stitch together later.</li>
+<li>Trim without re-encoding (Pro): WAV is cut at byte offsets, MP3 at frame boundaries, so the export is the same audio, just shorter.</li>
+<li>Library: play, download, rename and delete recordings, see storage used, and find them by the source page title and URL.</li>
+<li>Keyboard control: Alt+Shift+R starts and stops.</li>
+<li>Six interface languages: English, 中文, 日本語, Deutsch, Español, Français.</li>
+<li>Free covers 20 minutes per recording. Nothing expires, no feature is taken away, and your files carry no watermark.</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="plans">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">02</p>
+        <h2 id="i-plan-title">Free vs Pro</h2>
+        <p id="i-plan-lead">The free tier is a complete tool, not a trial. Pro is optional.</p>
+      </div>
+      <div class="plans" id="i-plans">
+        <article class="plan"><div class="plan-top"><span class="plan-mark free"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><h3>Free</h3></div><p>up to 20 minutes per file, MP3 or WAV, auto-download, the full library (play, download, rename, delete), recovery of unfinished recordings, and the keyboard shortcut.</p></article>
+        <article class="plan premium"><div class="plan-top"><span class="plan-mark premium"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><h3>Pro</h3></div><p>no time limit — a recording runs until you stop it or the tab closes — plus lossless trim. One licence key activates on two browsers, and removing the licence frees that slot again.</p></article>
+      </div>
+      <div class="plan-note" id="i-plan-note">The licence is optional. TabTape keeps working offline and asks the licence server for a check about every two hours when you open the popup; if the check fails, nothing is locked.</div>
+    </div>
+  </section>
+
+  <section class="block" id="privacy">
+    <div class="wrap">
+      <div class="privacy-panel">
+        <div>
+          <span class="panel-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg></span>
+          <h2 id="i-priv-title">Private by design</h2>
+          <p class="panel-lead" id="i-priv-lead">Your recordings stay on your device. No account, no analytics, no tracking. Read exactly what is stored and when the extension uses the network.</p>
+          <div class="points" id="i-priv-points"><span class="point"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Local recordings</span><span class="point"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>No account</span><span class="point"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Optional licence</span></div>
+          <a class="text-link" href="privacy-policy.html"><span id="i-priv-cta">Read the privacy policy</span><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="privacy-visual" aria-hidden="true">
+          <span class="ring one"></span><span class="ring two"></span><span class="ring three"></span>
+          <span class="lock-badge"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="support">
+    <div class="wrap">
+      <div class="support-card">
+        <div class="support-copy">
+          <p class="kicker" id="i-support-eyebrow">Support the developer</p>
+          <h2 id="i-support-title">💌 A Note to You</h2>
+          <div id="i-support-copy"><p>Thank you for using TabTape. I built this tool because I was tired of screen recorders that capture every notification, and download services that re-encode your audio on a server.</p><p>If it helps you too, that's already the best reward I could ask for.</p><p>Of course, if you'd like to <span class="heart">☕</span> buy me a coffee, it would truly make my day — and keep me motivated to make TabTape even better.</p></div>
+          <p class="disclaimer" id="i-support-disclaimer" hidden></p>
+        </div>
+        <div class="kofi">
+          <div class="kofi-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M16 10h2a3 3 0 0 1 0 6h-2"/><path d="M7 4v2M11 4v2"/></svg></div>
+          <p id="i-support-hint">Click the button below to visit the support page</p>
+          <a class="btn btn-primary kofi-btn" href="https://ko-fi.com/annmax?ref=tabtape" target="_blank" rel="noopener"><span id="i-support-btn-label">Support My Work</span></a>
+          <p class="kofi-note">Ko-fi</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <img src="icons/icon128.png" alt="" width="30" height="30">
+      <div>TabTape<span class="copy" id="i-footer-copy">© 2026 TabTape</span></div>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="https://annmax1983.com/extensions.html" target="_blank" rel="noopener" id="i-footer-more">More extensions</a>
+      <a href="privacy-policy.html" id="i-footer-privacy">Privacy</a>
+      <a href="https://annmax1983.com/extensions/tabtape" target="_blank" rel="noopener" id="i-footer-site">Website</a>
+      <a href="mailto:support@annmax1983.com">support@annmax1983.com</a>
+    </nav>
+  </div>
+</footer>
+<script>
+const MODEL = {"name":"TabTape","icon":"icons/icon128.png","site":"https://annmax1983.com/extensions/tabtape","support":"https://ko-fi.com/annmax?ref=tabtape","slug":"tabtape","langs":{"en":{"tagline":"Any tab's audio, on tape. · One-tab recorder for MP3 and WAV","intro":"TabTape records the sound of a single tab — a lecture, a stream, a song that will not be there tomorrow — and saves it as MP3 or WAV. Click the icon, press Record, and the file is on your disk when you stop. The tab keeps playing out loud the whole time. No account, no cloud, no upload, and no timer counting down to a purchase decision.","why":["Records the audio of one tab. Other tabs, system sounds and microphone input stay out of the file.","The tab keeps playing out loud while it records, so you can follow what you are capturing.","Constant memory: audio is encoded in one-second blocks and written to disk as it arrives, so length is limited by free disk space, not RAM.","MP3 at 128 or 64 kbps, or uncompressed WAV when the samples have to stay untouched.","Auto-save: the finished file downloads to Downloads/TabTape/ and is kept in the built-in library.","Crash-safe: if the browser closes mid-recording, the library offers to recover what already reached disk.","Unlimited length with Pro — a two-hour lecture is one file, not a pile of segments to stitch together later.","Trim without re-encoding (Pro): WAV is cut at byte offsets, MP3 at frame boundaries, so the export is the same audio, just shorter.","Library: play, download, rename and delete recordings, see storage used, and find them by the source page title and URL.","Keyboard control: Alt+Shift+R starts and stops.","Six interface languages: English, 中文, 日本語, Deutsch, Español, Français.","Free covers 20 minutes per recording. Nothing expires, no feature is taken away, and your files carry no watermark."],"plan":{"free":"Free, permanently: up to 20 minutes per file, MP3 or WAV, auto-download, the full library (play, download, rename, delete), recovery of unfinished recordings, and the keyboard shortcut.","premium":"Pro (optional licence): no time limit — a recording runs until you stop it or the tab closes — plus lossless trim. One licence key activates on two browsers, and removing the licence frees that slot again.","note":"The licence is optional. TabTape keeps working offline and asks the licence server for a check about every two hours when you open the popup; if the check fails, nothing is locked."},"thankTitle":"💌 A Note to You","thank":["Thank you for using TabTape. I built this tool because I was tired of screen recorders that capture every notification, and download services that re-encode your audio on a server.","If it helps you too, that's already the best reward I could ask for.","Of course, if you'd like to <span class=\"heart\">☕</span> buy me a coffee, it would truly make my day — and keep me motivated to make TabTape even better."],"disclaimer":"","ctaHint":"Click the button below to visit the support page","btnText":"Support My Work","ui":{"navFeatures":"Features","navPlans":"Free & Pro","navPrivacy":"Privacy","navSupport":"Support","eyebrow":"Chrome & Edge extension","badgeFree":"Free + Pro","badgeLocal":"Runs locally","badgeNoTrack":"No tracking","badgeBrowsers":"Chrome & Edge","ctaGet":"Get the extension","ctaPrivacy":"Privacy policy","featuresTitle":"Everything it does","featuresLead":"The core features at a glance.","moreTitle":"Also included","freeLabel":"Free","premiumLabel":"Pro","planTitle":"Free vs Pro","planLead":"The free tier is a complete tool, not a trial. Pro is optional.","privacyTitle":"Private by design","privacyLead":"Your recordings stay on your device. No account, no analytics, no tracking. Read exactly what is stored and when the extension uses the network.","privacyPoints":["Local recordings","No account","Optional licence"],"privacyCta":"Read the privacy policy","supportEyebrow":"Support the developer","footerMore":"More extensions","footerPrivacy":"Privacy","footerSite":"Website"}}
+,"zh":{"tagline":"任何标签页的声音，一键录下。 · 单标签页 MP3 / WAV 录音","intro":"TabTape 只录一个标签页的声音——网课、直播、明天就会下架的歌——保存为 MP3 或 WAV。点图标、按录制，停止时文件已经在你的磁盘上。录音期间标签页照常出声播放。无需账号，没有云端，不上传，也没有催你购买的倒计时。","why":["只录一个标签页的声音。其他标签页、系统提示音和麦克风都不会进入文件。","录音时标签页照常出声播放，录了什么随时听得到。","内存占用恒定：音频按约 1 秒分块编码、随到随写盘，能录多长取决于磁盘空间，而不是内存。","MP3 可选 128 或 64 kbps；要原样保留采样就选无损 WAV。","自动保存：停止后文件下载到 Downloads/TabTape/，同时留在内置录音库。","崩溃也不怕：录到一半浏览器关闭，录音库会从已写盘的数据恢复未完成的部分。","Pro 不限时长——两小时的网课就是一个文件，不用事后拼接。","Pro 裁剪不重编码：WAV 按字节位置切、MP3 按帧边界切，导出的还是原来的声音，只是短了。","录音库：播放、下载、重命名、删除，显示已用空间，每条保留来源页标题和 URL，好找。","键盘操作：Alt+Shift+R 开始 / 停止。","六种界面语言：English、中文、日本語、Deutsch、Español、Français。","免费每次可录 20 分钟。没有到期日，不收回已有功能，文件不带水印。"],"plan":{"free":"永久免费：每个文件最长 20 分钟，MP3 或 WAV，自动下载，完整录音库（播放、下载、重命名、删除），未完成录音的恢复，以及键盘快捷键。","premium":"Pro（可选授权）：不限时长——录到你停止或标签页关闭为止——外加无损裁剪。一个授权码可在两个浏览器激活，移除后名额重新空出。","note":"授权完全可选。TabTape 离线照常工作，打开弹窗时大约每两小时向授权服务器核对一次；核对失败也不会锁住任何功能。"},"thankTitle":"💌 想对你说","thank":["感谢你使用 TabTape。做这个工具，是因为我受够了录屏工具把每条提示音都录进去，也受够了下载服务在服务器上把你的音频重新编码。","如果它也帮到了你，那对我来说就是最好的回报。","当然，如果你愿意请我喝一杯咖啡 <span class=\"heart\">☕</span>，我会非常开心——这会让我更有动力继续打磨它。"],"disclaimer":"","ctaHint":"点击下方按钮，跳转到支持页面","btnText":"支持我的工作","ui":{"navFeatures":"功能","navPlans":"免费与 Pro","navPrivacy":"隐私","navSupport":"支持","eyebrow":"Chrome 与 Edge 扩展","badgeFree":"免费 + Pro","badgeLocal":"本地运行","badgeNoTrack":"无追踪","badgeBrowsers":"Chrome 与 Edge","ctaGet":"获取扩展","ctaPrivacy":"隐私政策","featuresTitle":"全部功能","featuresLead":"核心功能一览。","moreTitle":"还包括","freeLabel":"免费版","premiumLabel":"Pro 版","planTitle":"免费版与 Pro","planLead":"免费版是完整工具，不是试用版。Pro 完全可选。","privacyTitle":"隐私优先","privacyLead":"录音留在你的设备上。无需账号，没有统计，没有追踪。了解具体存储了什么，以及扩展何时联网。","privacyPoints":["本地录音","无需账号","授权可选"],"privacyCta":"阅读隐私政策","supportEyebrow":"支持开发者","footerMore":"更多扩展","footerPrivacy":"隐私","footerSite":"官网"}}
+,"ja":{"tagline":"タブの音を、テープに。 · ひとつのタブを MP3 / WAV で録音","intro":"TabTape は、ひとつのタブで再生されている音を録音します。講義、配信、明日には聴けなくなる曲——それを MP3 か WAV で保存します。アイコンをクリックして録音を押し、停止すれば、ファイルはもう自分のディスクにあります。録音中もタブはそのまま音を出します。アカウント登録も、クラウドも、アップロードも、購入を迫るカウントダウンもありません。","why":["録音するのはひとつのタブで再生中の音だけ。他のタブ、システム音、マイク入力はファイルに入りません。","録音中もタブは普通に再生されます。何を録っているかを常に耳で確認できます。","メモリ使用量は一定。音声を約 1 秒単位でエンコードし、届くそばからディスクへ書き込むため、録れる長さはメモリではなく空き容量で決まります。","MP3 は 128 / 64 kbps。原音のサンプルをそのまま残したいときは非圧縮の WAV。","自動保存：停止すると「ダウンロード/TabTape/」に保存され、同時に内蔵ライブラリにも残ります。","途中で落ちても安心：録音中にブラウザが終了しても、ライブラリがディスクに書き込まれた分から復元します。","Pro なら時間制限なし。2 時間の講義が 1 ファイルで済み、後から継ぎ合わせる必要はありません。","Pro のトリムは再エンコードなし。WAV はバイト位置で、MP3 はフレーム境界で切るだけなので、書き出した音は元の音声そのままです。","ライブラリ：再生、ダウンロード、名前変更、削除、使用容量の表示。各項目に元ページのタイトルと URL が残るので探し当てられます。","キーボード操作：Alt+Shift+R で開始 / 停止。","6 言語の UI を同梱：English、中文、日本語、Deutsch、Español、Français。","無料は 1 回 20 分まで。期限はなく、機能が取り上げられることもなく、ファイルに透かしも入りません。"],"plan":{"free":"永久に無料：1 ファイル 20 分まで、MP3 または WAV、自動ダウンロード、ライブラリの全機能（再生、ダウンロード、名前変更、削除）、未完了の録音の復元、キーボードショートカット。","premium":"Pro（任意のライセンス）：時間制限なし——停止するかタブが閉じるまで録り続けます——に加え、トリム。ライセンスキー 1 つで 2 つのブラウザを有効化でき、外すとその枠が再び空きます。","note":"ライセンスは任意です。TabTape はオフラインでも動作し、ポップアップを開いたとき約 2 時間ごとにライセンスサーバーへ確認します。確認に失敗しても機能がロックされることはありません。"},"thankTitle":"💌 ご利用ありがとうございます","thank":["TabTape をご利用いただきありがとうございます。このツールは、通知音まで全部拾ってしまう画面録画や、サーバー側で音を再エンコードするダウンロード代行にうんざりして作りました。","もし皆様のお役にも立てているなら、それが何よりの喜びです。","もしよろしければ、コーヒーを <span class=\"heart\">☕</span> 一杯おごっていただけると、とても嬉しいです。より良いツールを作る励みになります。"],"disclaimer":"","ctaHint":"下のボタンをクリックするとサポートページに移動します","btnText":"開発を支援する","ui":{"navFeatures":"機能","navPlans":"無料とPro","navPrivacy":"プライバシー","navSupport":"サポート","eyebrow":"Chrome & Edge 拡張機能","badgeFree":"無料 + Pro","badgeLocal":"端末上で動作","badgeNoTrack":"トラッキングなし","badgeBrowsers":"Chrome & Edge","ctaGet":"拡張機能を入手","ctaPrivacy":"プライバシーポリシー","featuresTitle":"すべての機能","featuresLead":"主な機能を一覧で。","moreTitle":"その他の機能","freeLabel":"無料版","premiumLabel":"Pro","planTitle":"無料版とPro","planLead":"無料版は試用版ではなく、完成したツールです。Pro は任意です。","privacyTitle":"プライバシー優先","privacyLead":"録音は端末上に残ります。アカウント、分析、トラッキングはありません。何が保存され、いつ通信するかを確認できます。","privacyPoints":["端末内で録音","アカウント不要","ライセンスは任意"],"privacyCta":"プライバシーポリシーを読む","supportEyebrow":"開発者を支援","footerMore":"他の拡張機能","footerPrivacy":"プライバシー","footerSite":"公式サイト"}}
+,"de":{"tagline":"Der Ton eines Tabs, auf Band. · Ein-Tab-Rekorder für MP3 und WAV","intro":"TabTape nimmt den Ton eines einzelnen Tabs auf — eine Vorlesung, einen Stream, einen Song, der morgen nicht mehr da ist — und speichert ihn als MP3 oder WAV. Symbol klicken, Aufnahme drücken, und beim Stoppen liegt die Datei auf der eigenen Festplatte. Der Tab spielt die ganze Zeit hörbar weiter. Kein Konto, keine Cloud, kein Upload und kein Countdown, der zum Kauf drängt.","why":["Nimmt den Ton eines einzelnen Tabs auf. Andere Tabs, Systemklänge und Mikrofon-Eingaben bleiben aus der Datei heraus.","Der Tab spielt während der Aufnahme hörbar weiter, sodass du mithören kannst, was du aufnimmst.","Konstanter Speicherbedarf: Audio wird in Ein-Sekunden-Blöcken kodiert und beim Eintreffen auf die Platte geschrieben — die Länge begrenzt der freie Speicherplatz, nicht der RAM.","MP3 mit 128 oder 64 kbps, oder unkomprimiertes WAV, wenn die Samples unangetastet bleiben müssen.","Automatisch speichern: Die fertige Datei landet in Downloads/TabTape/ und bleibt in der integrierten Bibliothek.","Absturzsicher: Schließt sich der Browser mitten in der Aufnahme, bietet die Bibliothek an, das bereits Geschriebene wiederherzustellen.","Unbegrenzte Länge mit Pro — eine zweistündige Vorlesung ist eine Datei, kein Stapel Segmente zum späteren Zusammenfügen.","Schneiden ohne Neukodierung (Pro): WAV wird an Byte-Positionen geschnitten, MP3 an Frame-Grenzen — der Export ist derselbe Ton, nur kürzer.","Bibliothek: Aufnahmen abspielen, herunterladen, umbenennen und löschen, belegten Speicher sehen und über Titel und URL der Quellseite wiederfinden.","Tastatursteuerung: Alt+Umschalt+R startet und stoppt.","Sechs Oberflächensprachen: English, 中文, 日本語, Deutsch, Español, Français.","Free deckt 20 Minuten pro Aufnahme ab. Nichts läuft ab, keine Funktion wird weggenommen, und deine Dateien tragen kein Wasserzeichen."],"plan":{"free":"Dauerhaft kostenlos: bis zu 20 Minuten pro Datei, MP3 oder WAV, automatischer Download, die volle Bibliothek (Abspielen, Herunterladen, Umbenennen, Löschen), Wiederherstellung unfertiger Aufnahmen und das Tastenkürzel.","premium":"Pro (optionale Lizenz): kein Zeitlimit — die Aufnahme läuft, bis du sie stoppst oder der Tab schließt — plus verlustfreies Schneiden. Ein Lizenzschlüssel aktiviert zwei Browser; entfernst du die Lizenz, wird der Platz wieder frei.","note":"Die Lizenz ist optional. TabTape funktioniert auch offline und fragt den Lizenzserver etwa alle zwei Stunden beim Öffnen des Popups; schlägt die Prüfung fehl, wird nichts gesperrt."},"thankTitle":"💌 Ein paar Worte an Sie","thank":["Danke, dass Sie TabTape nutzen. Ich habe dieses Tool gebaut, weil ich genug hatte von Bildschirmrekordern, die jede Benachrichtigung aufnehmen, und Download-Diensten, die Ihren Ton auf einem Server neu kodieren.","Wenn es auch Ihnen hilft, ist das die beste Belohnung, die ich mir wünschen kann.","Wenn Sie mir gerne einen <span class=\"heart\">☕</span> Kaffee ausgeben möchten, würde mich das sehr freuen — und mich motivieren, TabTape noch besser zu machen."],"disclaimer":"","ctaHint":"Klicken Sie auf die Schaltfläche unten, um zur Support-Seite zu gelangen","btnText":"Meine Arbeit unterstützen","ui":{"navFeatures":"Funktionen","navPlans":"Free & Pro","navPrivacy":"Datenschutz","navSupport":"Support","eyebrow":"Chrome- und Edge-Erweiterung","badgeFree":"Free + Pro","badgeLocal":"Läuft lokal","badgeNoTrack":"Kein Tracking","badgeBrowsers":"Chrome & Edge","ctaGet":"Erweiterung holen","ctaPrivacy":"Datenschutzerklärung","featuresTitle":"Alle Funktionen","featuresLead":"Die wichtigsten Funktionen im Überblick.","moreTitle":"Außerdem","freeLabel":"Free","premiumLabel":"Pro","planTitle":"Free vs. Pro","planLead":"Die kostenlose Version ist ein vollständiges Werkzeug, keine Testversion. Pro ist optional.","privacyTitle":"Privat by Design","privacyLead":"Deine Aufnahmen bleiben auf deinem Gerät. Kein Konto, keine Analyse, kein Tracking. Lies genau, was gespeichert wird und wann die Erweiterung das Netz nutzt.","privacyPoints":["Lokale Aufnahmen","Kein Konto","Lizenz optional"],"privacyCta":"Datenschutzerklärung lesen","supportEyebrow":"Unterstütze die Entwicklung","footerMore":"Weitere Erweiterungen","footerPrivacy":"Datenschutz","footerSite":"Website"}}
+,"es":{"tagline":"El audio de una pestaña, en cinta. · Grabadora de una pestaña en MP3 y WAV","intro":"TabTape graba el sonido de una sola pestaña — una clase, un directo, una canción que mañana no estará — y lo guarda como MP3 o WAV. Haz clic en el icono, pulsa Grabar y, al detener, el archivo ya está en tu disco. La pestaña sigue sonando todo el tiempo. Sin cuenta, sin nube, sin subidas y sin cuenta atrás que te empuje a comprar.","why":["Graba el audio de una sola pestaña. Las demás pestañas, los sonidos del sistema y el micrófono quedan fuera del archivo.","La pestaña sigue sonando mientras graba, así que puedes escuchar lo que estás capturando.","Memoria constante: el audio se codifica en bloques de un segundo y se escribe en disco a medida que llega, así que la duración la limita el espacio libre, no la RAM.","MP3 a 128 o 64 kbps, o WAV sin comprimir cuando las muestras deben quedar intactas.","Guardado automático: el archivo terminado se descarga en Downloads/TabTape/ y queda en la biblioteca integrada.","A prueba de cierres: si el navegador se cierra a mitad de grabación, la biblioteca ofrece recuperar lo que ya llegó al disco.","Duración ilimitada con Pro: una clase de dos horas es un solo archivo, no un montón de segmentos para unir después.","Recorte sin recodificar (Pro): el WAV se corta por desplazamientos de bytes y el MP3 por límites de trama, así que el archivo exportado es el mismo audio, solo más corto.","Biblioteca: reproduce, descarga, renombra y elimina grabaciones, consulta el espacio usado y encuéntralas por el título y la URL de la página de origen.","Control por teclado: Alt+Mayús+R inicia y detiene la grabación.","Seis idiomas de interfaz: English, 中文, 日本語, Deutsch, Español, Français.","La versión gratuita cubre 20 minutos por grabación. Nada caduca, no se retira ninguna función y tus archivos no llevan marca de agua."],"plan":{"free":"Gratis para siempre: hasta 20 minutos por archivo, MP3 o WAV, descarga automática, la biblioteca completa (reproducir, descargar, renombrar, eliminar), recuperación de grabaciones inconclusas y el atajo de teclado.","premium":"Pro (licencia opcional): sin límite de tiempo — la grabación sigue hasta que la detengas o se cierre la pestaña — más recorte sin pérdida. Una clave de licencia se activa en dos navegadores; si la quitas, ese espacio vuelve a quedar libre.","note":"La licencia es opcional. TabTape sigue funcionando sin conexión y consulta al servidor de licencias aproximadamente cada dos horas al abrir el panel; si la comprobación falla, no se bloquea nada."},"thankTitle":"💌 Unas palabras para ti","thank":["Gracias por usar TabTape. Construí esta herramienta porque estaba harto de grabadores de pantalla que capturan cada notificación y de servicios de descarga que recodifican tu audio en un servidor.","Si también te ayuda a ti, esa ya es la mejor recompensa que puedo pedir.","Por supuesto, si quieres invitarme a un <span class=\"heart\">☕</span> café, me haría muy feliz — y me motivaría a seguir mejorando TabTape."],"disclaimer":"","ctaHint":"Haz clic en el botón de abajo para visitar la página de soporte","btnText":"Apoya mi trabajo","ui":{"navFeatures":"Funciones","navPlans":"Gratis y Pro","navPrivacy":"Privacidad","navSupport":"Apoyo","eyebrow":"Extensión para Chrome y Edge","badgeFree":"Gratis + Pro","badgeLocal":"Se ejecuta en local","badgeNoTrack":"Sin rastreo","badgeBrowsers":"Chrome y Edge","ctaGet":"Obtener la extensión","ctaPrivacy":"Política de privacidad","featuresTitle":"Todo lo que hace","featuresLead":"Las funciones principales de un vistazo.","moreTitle":"También incluye","freeLabel":"Gratis","premiumLabel":"Pro","planTitle":"Gratis vs Pro","planLead":"La versión gratuita es una herramienta completa, no una prueba. Pro es opcional.","privacyTitle":"Privacidad por diseño","privacyLead":"Tus grabaciones se quedan en tu dispositivo. Sin cuenta, sin analíticas y sin rastreo. Consulta qué se guarda y cuándo usa la red la extensión.","privacyPoints":["Grabación local","Sin cuenta","Licencia opcional"],"privacyCta":"Leer la política de privacidad","supportEyebrow":"Apoya al desarrollador","footerMore":"Más extensiones","footerPrivacy":"Privacidad","footerSite":"Sitio web"}}
+,"fr":{"tagline":"Le son d'un onglet, sur bande. · Enregistreur d'un onglet en MP3 et WAV","intro":"TabTape enregistre le son d'un seul onglet — un cours, un direct, une chanson qui ne sera plus là demain — et le sauvegarde en MP3 ou WAV. Cliquez sur l'icône, appuyez sur Enregistrer, et le fichier est sur votre disque à l'arrêt. L'onglet continue de jouer à voix haute pendant tout l'enregistrement. Sans compte, sans cloud, sans envoi et sans compte à rebours qui pousse à l'achat.","why":["Enregistre le son d'un seul onglet. Les autres onglets, les sons système et le micro restent hors du fichier.","L'onglet continue de jouer à voix haute pendant l'enregistrement : vous entendez ce que vous capturez.","Mémoire constante : l'audio est encodé par blocs d'une seconde et écrit sur le disque au fur et à mesure ; la durée est limitée par l'espace disque libre, pas par la RAM.","MP3 à 128 ou 64 kbps, ou WAV non compressé quand les échantillons doivent rester intacts.","Sauvegarde automatique : le fichier terminé est téléchargé dans Downloads/TabTape/ et conservé dans la bibliothèque intégrée.","Résistant aux fermetures : si le navigateur se ferme en plein enregistrement, la bibliothèque propose de récupérer ce qui a déjà atteint le disque.","Durée illimitée avec Pro — un cours de deux heures tient dans un seul fichier, pas une pile de segments à recoller ensuite.","Rognage sans réencodage (Pro) : le WAV est coupé aux offsets d'octets, le MP3 aux frontières de trames ; l'export est le même audio, en plus court.","Bibliothèque : lire, télécharger, renommer et supprimer les enregistrements, voir l'espace utilisé et les retrouver par le titre et l'URL de la page source.","Commande au clavier : Alt+Maj+R démarre et arrête.","Six langues d'interface : English, 中文, 日本語, Deutsch, Español, Français.","La version gratuite couvre 20 minutes par enregistrement. Rien n'expire, aucune fonction n'est retirée et vos fichiers ne portent aucun filigrane."],"plan":{"free":"Gratuit pour toujours : jusqu'à 20 minutes par fichier, MP3 ou WAV, téléchargement automatique, la bibliothèque complète (lire, télécharger, renommer, supprimer), la récupération des enregistrements inachevés et le raccourci clavier.","premium":"Pro (licence facultative) : aucune limite de durée — l'enregistrement continue jusqu'à l'arrêt ou la fermeture de l'onglet — plus le rognage sans perte. Une clé de licence s'active sur deux navigateurs ; la retirer libère cette place.","note":"La licence est facultative. TabTape continue de fonctionner hors ligne et interroge le serveur de licences environ toutes les deux heures à l'ouverture du panneau ; en cas d'échec, rien n'est verrouillé."},"thankTitle":"💌 Un petit mot pour vous","thank":["Merci d'utiliser TabTape. J'ai construit cet outil parce que j'en avais assez des enregistreurs d'écran qui capturent chaque notification et des services de téléchargement qui réencodent votre audio sur un serveur.","S'il vous aide aussi, c'est déjà la plus belle récompense.","Bien sûr, si vous souhaitez m'offrir un <span class=\"heart\">☕</span> café, cela me ferait très plaisir — et me motiverait à améliorer TabTape encore davantage."],"disclaimer":"","ctaHint":"Cliquez sur le bouton ci-dessous pour accéder à la page de soutien","btnText":"Soutenir mon travail","ui":{"navFeatures":"Fonctionnalités","navPlans":"Gratuit et Pro","navPrivacy":"Confidentialité","navSupport":"Soutien","eyebrow":"Extension Chrome et Edge","badgeFree":"Gratuit + Pro","badgeLocal":"Fonctionne en local","badgeNoTrack":"Aucun suivi","badgeBrowsers":"Chrome et Edge","ctaGet":"Obtenir l'extension","ctaPrivacy":"Politique de confidentialité","featuresTitle":"Toutes les fonctionnalités","featuresLead":"Les fonctions essentielles en un coup d'œil.","moreTitle":"Également inclus","freeLabel":"Gratuit","premiumLabel":"Pro","planTitle":"Gratuit vs Pro","planLead":"La version gratuite est un outil complet, pas une version d'essai. Pro est facultatif.","privacyTitle":"Confidentiel par conception","privacyLead":"Vos enregistrements restent sur votre appareil. Sans compte, sans analyse, sans suivi. Découvrez ce qui est stocké et quand l'extension utilise le réseau.","privacyPoints":["Enregistrement local","Sans compte","Licence facultative"],"privacyCta":"Lire la politique de confidentialité","supportEyebrow":"Soutenir le développeur","footerMore":"Plus d'extensions","footerPrivacy":"Confidentialité","footerSite":"Site web"}}}};
+const LANG_KEY = "vkt-tabtape-lang";
+(function () {
+  "use strict";
+
+  var select = document.getElementById("i-lang");
+
+  function esc(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value == null ? "" : value;
+  }
+
+  function detect() {
+    var codes = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+    for (var i = 0; i < codes.length; i++) {
+      var code = String(codes[i] || "").toLowerCase();
+      if (code.indexOf("zh") === 0) return "zh";
+      if (code.indexOf("ja") === 0) return "ja";
+      if (code.indexOf("de") === 0) return "de";
+      if (code.indexOf("es") === 0) return "es";
+      if (code.indexOf("fr") === 0) return "fr";
+      if (code.indexOf("en") === 0) return "en";
+    }
+    return "en";
+  }
+
+  function stripLead(value) {
+    var text = String(value == null ? "" : value);
+    var match = text.match(/^([^:：]{1,70})[:：]\s*/);
+    if (match && /(free|gratis|kostenlos|gratuit|無料|免费|免費|premium|pro\b|payant|kostenpflichtig|プレミアム|有料|高级|高級|付费|付費|licen|lizenz|licencia|licence|授权|授權|ライセンス)/i.test(match[1])) {
+      return text.slice(match[0].length);
+    }
+    return text;
+  }
+
+  function sentence(value) {
+    var text = String(value == null ? "" : value);
+    return /^[a-z]/.test(text) ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+  }
+
+  function cleanNote(value) {
+    var text = String(value == null ? "" : value).trim();
+    if (/^(HOW IT WORKS|SO FUNKTIONIERT ES|CÓMO FUNCIONA|COMMENT ÇA MARCHE|使用方法|使い方)$/i.test(text)) return "";
+    return text;
+  }
+
+  var iconCheck = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  var iconLocal = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>';
+  var iconEye = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c5 0 9 4.5 9 7a11.7 11.7 0 0 1-2.3 3.6"/><path d="M6.2 6.2C4.2 7.7 3 9.7 3 12c0 2.5 4 7 9 7a11 11 0 0 0 4.2-.8"/></svg>';
+  var iconGlobe = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>';
+  var iconCoffee = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M16 10h2a3 3 0 0 1 0 6h-2"/><path d="M7 4v2M11 4v2"/></svg>';
+
+  function render(lang) {
+    var data = MODEL.langs[lang];
+    if (!data) return;
+    var u = data.ui;
+
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+
+    var parts = String(data.tagline || "").split("·").map(function (part) { return part.trim(); }).filter(Boolean);
+    var headline = parts.length ? parts.shift() : MODEL.name;
+
+    document.title = MODEL.name + " — " + headline;
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", data.intro.slice(0, 158));
+
+    setText("i-nav-features", u.navFeatures);
+    setText("i-nav-plans", u.navPlans);
+    setText("i-nav-privacy", u.navPrivacy);
+    setText("i-nav-support", u.navSupport);
+    setText("i-eyebrow", u.eyebrow);
+    setText("i-h1", headline);
+    setText("i-intro", data.intro);
+    setText("i-get-label", u.ctaGet);
+    setText("i-privacy-label", u.ctaPrivacy);
+    setText("i-micro", u.badgeFree + " · " + u.badgeBrowsers);
+
+    var tagline = document.getElementById("i-tagline");
+    if (tagline) {
+      tagline.innerHTML = parts.map(function (part) { return "<span>" + esc(part) + "</span>"; }).join("");
+    }
+
+    var badges = document.getElementById("i-badges");
+    if (badges) {
+      badges.innerHTML = [
+        [iconLocal, u.badgeLocal],
+        [iconEye, u.badgeNoTrack],
+        [iconGlobe, u.badgeBrowsers]
+      ].map(function (item) {
+        return '<span class="badge">' + item[0] + esc(item[1]) + "</span>";
+      }).join("");
+    }
+
+    setText("i-app-name", MODEL.name);
+    setText("i-app-sub", u.badgeFree);
+    setText("i-app-browsers", u.badgeBrowsers);
+    var appPoints = document.getElementById("i-app-points");
+    if (appPoints) {
+      appPoints.innerHTML = u.privacyPoints.map(function (point) {
+        return "<div>" + iconCheck + "<span>" + esc(point) + "</span></div>";
+      }).join("");
+    }
+
+    setText("i-feat-title", u.featuresTitle);
+    setText("i-feat-lead", u.featuresLead);
+    setText("i-more-title", u.moreTitle);
+
+    var primary = data.why.slice(0, 6);
+    var extra = data.why.slice(6);
+    var featureGrid = document.getElementById("i-features");
+    if (featureGrid) {
+      featureGrid.innerHTML = primary.map(function (text, index) {
+        return '<article class="feature"><span class="num">' + String(index + 1).padStart(2, "0") + "</span><p>" + esc(text) + "</p></article>";
+      }).join("");
+    }
+
+    var morePanel = document.getElementById("i-more-panel");
+    var moreList = document.getElementById("i-more");
+    if (morePanel && moreList) {
+      if (extra.length) {
+        morePanel.hidden = false;
+        moreList.innerHTML = extra.map(function (text) { return "<li>" + esc(text) + "</li>"; }).join("");
+      } else {
+        morePanel.hidden = true;
+      }
+    }
+
+    setText("i-plan-title", u.planTitle);
+    setText("i-plan-lead", u.planLead);
+    var plans = document.getElementById("i-plans");
+    if (plans) {
+      plans.innerHTML =
+        '<article class="plan"><div class="plan-top"><span class="plan-mark free">' + iconCheck + "</span><h3>" + esc(u.freeLabel) + "</h3></div><p>" + esc(sentence(stripLead(data.plan.free))) + "</p></article>" +
+        '<article class="plan premium"><div class="plan-top"><span class="plan-mark premium">' + iconCheck + "</span><h3>" + esc(u.premiumLabel) + "</h3></div><p>" + esc(sentence(stripLead(data.plan.premium))) + "</p></article>";
+    }
+
+    var note = cleanNote(data.plan.note);
+    var planNote = document.getElementById("i-plan-note");
+    if (planNote) {
+      planNote.hidden = !note;
+      planNote.textContent = note;
+    }
+
+    setText("i-priv-title", u.privacyTitle);
+    setText("i-priv-lead", u.privacyLead);
+    setText("i-priv-cta", u.privacyCta);
+    var points = document.getElementById("i-priv-points");
+    if (points) {
+      points.innerHTML = u.privacyPoints.map(function (point) {
+        return '<span class="point">' + iconCheck + esc(point) + "</span>";
+      }).join("");
+    }
+
+    setText("i-support-eyebrow", u.supportEyebrow);
+    setText("i-support-title", data.thankTitle);
+    var copy = document.getElementById("i-support-copy");
+    if (copy) {
+      copy.innerHTML = data.thank.map(function (paragraph) { return "<p>" + paragraph + "</p>"; }).join("");
+    }
+    var hint = document.getElementById("i-support-hint");
+    if (hint) {
+      hint.hidden = !data.ctaHint;
+      hint.textContent = data.ctaHint || "";
+    }
+    setText("i-support-btn-label", data.btnText || "Buy Me a Coffee");
+    var disclaimer = document.getElementById("i-support-disclaimer");
+    if (disclaimer) {
+      disclaimer.hidden = !data.disclaimer;
+      disclaimer.textContent = data.disclaimer || "";
+    }
+
+    setText("i-footer-more", u.footerMore);
+    setText("i-footer-privacy", u.footerPrivacy);
+    setText("i-footer-site", u.footerSite);
+    setText("i-footer-copy", "© 2026 " + MODEL.name);
+  }
+
+  function storedLang() {
+    try { return localStorage.getItem(LANG_KEY); } catch (error) { return null; }
+  }
+
+  function remember(lang) {
+    try { localStorage.setItem(LANG_KEY, lang); } catch (error) { /* storage can be blocked */ }
+  }
+
+  if (select) {
+    var saved = storedLang();
+    var initial = saved && MODEL.langs[saved] ? saved : detect();
+    if (!MODEL.langs[initial]) initial = "en";
+    select.value = initial;
+    if (initial !== "en") render(initial);
+    select.addEventListener("change", function () {
+      remember(select.value);
+      render(select.value);
+    });
+  }
+})();
+</script>
+</body>
+</html>

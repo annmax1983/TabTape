@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TabTape — Privacy Policy</title>
+<meta name="description" content="TabTape privacy policy: what is stored on your device, when the extension uses the network, and how to delete your data.">
+<link rel="icon" href="icons/icon128.png">
+<style>
+:root{
+  --accent:#e5484d;
+  --accent-2:#8f1d22;
+  --bg:#fcf8f8;
+  --surface:#ffffff;
+  --ink:#2a2023;
+  --body:#5c565a;
+  --muted:#8d878c;
+  --line:#eee2e3;
+  --tint:#fdf1f1;
+  --tint:color-mix(in srgb, var(--accent) 8%, #ffffff);
+  --tint-strong:#fbe4e4;
+  --tint-strong:color-mix(in srgb, var(--accent) 14%, #ffffff);
+  --shadow:0 18px 45px rgba(42,32,35,.10);
+  --shadow-soft:0 8px 24px rgba(42,32,35,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{
+  margin:0;
+  color:var(--body);
+  background:radial-gradient(900px 420px at 100% -8%, color-mix(in srgb, var(--accent-2) 12%, #ffffff) 0%, rgba(255,255,255,0) 70%), var(--bg);
+  font-family:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{display:block;max-width:100%}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+button,select{font:inherit}
+[hidden]{display:none !important}
+::selection{background:color-mix(in srgb, var(--accent) 22%, #ffffff);color:var(--ink)}
+:focus-visible{outline:2px solid color-mix(in srgb, var(--accent) 55%, #ffffff);outline-offset:3px}
+.wrap{width:min(1120px, calc(100% - 40px));margin:0 auto}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.topbar-inner{display:flex;align-items:center;gap:18px;height:70px}
+.brand{display:flex;align-items:center;gap:11px;color:var(--ink);font-size:16px;font-weight:750;letter-spacing:-.015em;white-space:nowrap}
+.brand:hover{text-decoration:none}
+.brand img{width:32px;height:32px;border-radius:9px;background:#fff;border:1px solid var(--line)}
+.top-actions{display:flex;align-items:center;gap:9px;margin-left:auto}
+.icon-btn{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--muted)}
+.icon-btn:hover{color:var(--accent);border-color:color-mix(in srgb, var(--accent) 26%, var(--line));text-decoration:none}
+.lang{
+  appearance:none;-webkit-appearance:none;
+  border:1px solid var(--line);
+  background-color:#fff;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238d878c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  background-size:12px;
+  color:var(--ink);
+  border-radius:10px;
+  padding:9px 32px 9px 11px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  max-width:150px;
+}
+.lang:hover{border-color:color-mix(in srgb, var(--accent) 26%, var(--line))}
+.site-footer{margin-top:48px;border-top:1px solid var(--line);background:rgba(255,255,255,.8);padding:32px 0}
+.footer-inner{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center;justify-content:space-between}
+.footer-brand{display:flex;align-items:center;gap:11px;color:var(--ink);font-size:14px;font-weight:700}
+.footer-brand img{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.footer-brand .copy{display:block;color:var(--muted);font-size:12px;font-weight:500;line-height:1.4;margin-top:1px}
+.footer-links{display:flex;flex-wrap:wrap;gap:9px 18px;align-items:center;font-size:13px;font-weight:600}
+.footer-links a{color:var(--muted)}
+.footer-links a:hover{color:var(--accent);text-decoration:none}
+@media (max-width:900px){
+  .topbar-inner{height:62px}
+  .wrap{width:calc(100% - 32px)}
+}
+@media (max-width:560px){
+  .brand span{display:none}
+  .lang{max-width:124px}
+  .site-footer{padding:26px 0}
+  .footer-inner{align-items:flex-start;flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none !important;animation:none !important}
+}
+
+.policy-hero{padding:42px 0 8px}
+.policy-hero-card{position:relative;overflow:hidden;background:linear-gradient(135deg,#ffffff 0%, color-mix(in srgb, var(--accent) 7%, #ffffff) 58%, color-mix(in srgb, var(--accent-2) 16%, #ffffff) 100%);border:1px solid var(--line);border-radius:26px;padding:42px 46px 36px;box-shadow:var(--shadow)}
+.policy-hero-card::after{content:"";position:absolute;width:360px;height:360px;right:-110px;top:-160px;border-radius:50%;border:1px solid color-mix(in srgb, var(--accent) 22%, #ffffff);box-shadow:0 0 0 48px color-mix(in srgb, var(--accent) 5%, transparent);pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.72);border:1px solid color-mix(in srgb, var(--accent) 22%, var(--line));color:var(--accent);font-size:11.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.policy-hero h1{position:relative;z-index:1;margin:16px 0 0;color:var(--ink);font-size:clamp(34px,4.4vw,50px);line-height:1.06;letter-spacing:-.035em;font-weight:800}
+.policy-hero h1 .h1-sub{color:var(--accent);font-weight:780}
+.summary{position:relative;z-index:1;max-width:860px;margin:16px 0 20px;color:var(--body);font-size:15.5px;line-height:1.75}
+.summary strong{color:var(--ink);font-weight:700}
+.chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.8);color:var(--ink);font-size:12.5px;font-weight:650}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-2)}
+.updated{position:relative;z-index:1;display:flex;align-items:center;gap:7px;margin:18px 0 0;color:var(--muted);font-size:12.5px;font-weight:550}
+.updated svg{color:var(--accent)}
+.policy-layout{display:grid;grid-template-columns:272px minmax(0,1fr);gap:28px;align-items:start;padding:32px 0 38px}
+.toc{position:sticky;top:92px;max-height:calc(100vh - 120px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 17px;box-shadow:var(--shadow-soft)}
+.toc-title{margin:2px 0 12px;color:var(--ink);font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+#p-toc{display:grid;gap:3px}
+#p-toc a{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:baseline;padding:8px 10px;border-radius:10px;border:1px solid transparent;color:var(--muted);font-size:14px;line-height:1.45}
+#p-toc a span{color:color-mix(in srgb, var(--accent) 58%, var(--muted));font-size:11.5px;font-weight:800;letter-spacing:.04em}
+#p-toc a:hover{background:var(--tint);color:var(--ink);text-decoration:none}
+#p-toc a.active{background:var(--tint);border-color:color-mix(in srgb, var(--accent) 18%, var(--line));color:var(--ink)}
+#p-toc a.active span{color:var(--accent)}
+.policy-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow-soft)}
+.policy-card + .policy-card{margin-top:15px}
+.policy-card h2{display:flex;align-items:baseline;gap:11px;margin:0 0 16px;color:var(--ink);font-size:21px;line-height:1.3;letter-spacing:-.015em;font-weight:760}
+.policy-num{flex:none;padding:4px 8px;border-radius:8px;background:var(--tint);color:var(--accent);font-size:11.5px;font-weight:800;letter-spacing:.04em}
+.policy-body{color:var(--body);font-size:15px;line-height:1.75;overflow-wrap:anywhere}
+.policy-body p{margin:0 0 14px}
+.policy-body p:last-child{margin-bottom:0}
+.policy-body strong{color:var(--ink);font-weight:700}
+.policy-body em{color:var(--body)}
+.policy-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.policy-body a:hover{color:color-mix(in srgb, var(--accent) 80%, var(--ink))}
+.policy-body code{display:inline;padding:1px 6px;border:1px solid var(--line);border-radius:6px;background:#faf3f3;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+.policy-body ul{display:grid;gap:8px;margin:0 0 15px;padding:0;list-style:none}
+.policy-body ul:last-child{margin-bottom:0}
+.policy-body li{position:relative;padding-left:21px}
+.policy-body li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--accent-2)}
+.policy-body h3{margin:21px 0 8px;color:var(--ink);font-size:15.5px;line-height:1.4;font-weight:750}
+.policy-body h3:first-child{margin-top:0}
+.policy-body .note{margin:15px 0 0;padding:13px 15px;border-left:3px solid var(--accent);border-radius:10px;background:var(--tint);color:var(--body);font-size:13.5px;line-height:1.65}
+.table-wrap{margin:15px 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.policy-body table{width:100%;min-width:480px;border-collapse:collapse;font-size:13.5px;line-height:1.55}
+.policy-body th{padding:10px 13px;border-bottom:1px solid var(--line);background:#faf3f3;color:var(--ink);text-align:left;font-weight:700}
+.policy-body td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.policy-body th:first-child,.policy-body td:first-child{min-width:150px}
+.policy-body tr:last-child td{border-bottom:none}
+.policy-body table code{white-space:nowrap}
+@media (max-width:900px){
+  .policy-hero{padding:26px 0 4px}
+  .policy-hero-card{padding:30px 24px 28px;border-radius:22px}
+  .policy-layout{grid-template-columns:1fr;gap:16px;padding:22px 0 30px}
+  .toc{position:static;max-height:none;padding:14px}
+  #p-toc{grid-template-columns:1fr 1fr}
+  .policy-card{padding:23px 20px}
+  .policy-card h2{font-size:19px}
+}
+@media (max-width:600px){
+  #p-toc{grid-template-columns:1fr}
+  .policy-card{padding:21px 17px}
+  .policy-body{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/icon128.png" alt="" width="32" height="32"><span>TabTape</span></a>
+    <div class="top-actions">
+      <select class="lang" id="p-lang" aria-label="Language"><option value="en">English</option><option value="zh">简体中文</option><option value="ja">日本語</option><option value="de">Deutsch</option><option value="es">Español</option><option value="fr">Français</option></select>
+      <a class="icon-btn" href="index.html" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h12V10"/></svg></a>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="policy-hero">
+    <div class="wrap">
+      <div class="policy-hero-card">
+        <span class="eyebrow" id="p-eyebrow">Privacy Policy</span>
+        <h1><span id="p-h1">TabTape</span> <span class="h1-sub" id="p-h1-sub">Privacy Policy</span></h1>
+        <p class="summary" id="p-summary">TabTape does NOT collect, store, or transmit any of your personal data. Recordings are captured, encoded and saved entirely on your device. The only network request the extension makes is the optional Pro licence check described in Section 4.</p>
+        <div class="chips" id="p-chips"><span class="chip">Recordings stay on your device</span><span class="chip">No analytics</span><span class="chip">No account</span><span class="chip">Licence optional</span></div>
+        <p class="updated"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="p-updated">Last updated: November 2026</span></p>
+      </div>
+    </div>
+  </section>
+  <div class="wrap policy-layout">
+    <aside class="toc">
+      <p class="toc-title" id="p-toc-title">On this page</p>
+      <nav id="p-toc" aria-label="On this page">
+<a href="#section-1"><span>01</span>Data Collection</a>
+<a href="#section-2"><span>02</span>How TabTape Works</a>
+<a href="#section-3"><span>03</span>Permissions Explained</a>
+<a href="#section-4"><span>04</span>Third-Party Services &amp; License Verification</a>
+<a href="#section-5"><span>05</span>Data Sharing</a>
+<a href="#section-6"><span>06</span>Children's Privacy</a>
+<a href="#section-7"><span>07</span>What Is Captured — and What Is Not</a>
+<a href="#section-8"><span>08</span>Data retention &amp; deletion</a>
+<a href="#section-9"><span>09</span>Changes to this policy</a>
+<a href="#section-10"><span>10</span>Contact</a>
+      </nav>
+    </aside>
+    <div id="p-sections">
+<article class="policy-card" id="section-1"><h2><span class="policy-num">01</span>Data Collection</h2><div class="policy-body"><p>TabTape does not collect any personal information, browsing data, page content or usage analytics. We do not use cookies, tracking pixels, fingerprinting or telemetry of any kind. Your recordings are yours: they are captured, encoded and stored on your device only.</p></div></article>
+<article class="policy-card" id="section-2"><h2><span class="policy-num">02</span>How TabTape Works</h2><div class="policy-body"><p>Everything happens inside your browser:</p><ul><li>Capture — when you press Record, chrome.tabCapture takes the audio of the tab you chose, and only that tab. Other tabs, system sounds and the microphone are not captured.</li><li>Encoding — a hidden offscreen document encodes the audio in about one-second blocks (MP3 with the bundled lamejs encoder, or raw WAV).</li><li>Storage — each block is written into the extension's local database (IndexedDB) as it arrives, so memory stays flat and a crash cannot take the whole recording.</li><li>Output — pressing Stop assembles the file, keeps it in the library and downloads it to Downloads/TabTape/ when auto-download is on.</li><li>No page reading — there is no content script: TabTape never sees the HTML, text or form fields of the page you record.</li></ul><div class="note">At no point does audio or any other data leave your device.</div></div></article>
+<article class="policy-card" id="section-3"><h2><span class="policy-num">03</span>Permissions Explained</h2><div class="policy-body"><div class="table-wrap"><table><thead><tr><th>Permission</th><th>Purpose</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>Take the audio of the one tab you asked to record</td></tr><tr><td><code>offscreen</code></td><td>Run the MP3/WAV encoder in a hidden document (MV3 service workers have no DOM)</td></tr><tr><td><code>downloads</code></td><td>Save the finished file to Downloads/TabTape/</td></tr><tr><td><code>storage</code></td><td>Settings and licence state on this device</td></tr><tr><td><code>unlimitedStorage</code></td><td>Keep long recordings in the local library without hitting the storage quota</td></tr><tr><td><code>alarms</code></td><td>Stop a recording that reaches the free 20-minute limit, even if the service worker was unloaded</td></tr><tr><td><code>activeTab</code></td><td>Know which tab you asked to record when you click the icon or press the shortcut</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>Licence activation and checks only — never audio</td></tr></tbody></table></div><div class="note">TabTape requests only the minimum permissions the job needs. There is no &lt;all_urls&gt; host access, no content script, no history permission and no tabs permission.</div></div></article>
+<article class="policy-card" id="section-4"><h2><span class="policy-num">04</span>Third-Party Services &amp; License Verification</h2><div class="policy-body"><p>TabTape does not connect to any third-party service, API, CDN or external server, and recording works entirely offline. The MP3 encoder (lamejs, LGPL) is bundled with the extension; nothing is fetched at runtime. The only exception is the optional Pro licence: free features make no network request at all. With a licence, the extension contacts our licence server (api.annmax1983.com) only to activate it, to re-verify it at most once every 2 hours when you open the popup, and to release it. These requests carry your licence key, a random install identifier, the plugin id and basic browser metadata (browser name/version, interface language, time zone, user agent) — never your recordings, page content or browsing data. Our licence server records the IP address of these requests solely for rate limiting and abuse prevention — never for profiling, advertising or sharing with third parties.</p></div></article>
+<article class="policy-card" id="section-5"><h2><span class="policy-num">05</span>Data Sharing</h2><div class="policy-body"><p>We do not share, sell, rent or trade any data with third parties because we do not collect any data in the first place.</p></div></article>
+<article class="policy-card" id="section-6"><h2><span class="policy-num">06</span>Children's Privacy</h2><div class="policy-body"><p>TabTape does not collect any personal information from any user, including children under the age of 13.</p></div></article>
+<article class="policy-card" id="section-7"><h2><span class="policy-num">07</span>What Is Captured — and What Is Not</h2><div class="policy-body"><ul><li>Only the audio of the tab you started recording on. Microphone input and system audio are never captured.</li><li>DRM-protected players (subscription video, some music services) keep their audio away from extensions by design; those pages record as silence. That is the platform's protection doing its job.</li><li>Browser-internal pages (chrome://, the Web Store, the New Tab page) cannot be captured. Start on a normal http or https page.</li><li>No transcription, no summaries, no AI. TabTape produces an audio file and stops there.</li></ul></div></article>
+<article class="policy-card" id="section-8"><h2><span class="policy-num">08</span>Data retention &amp; deletion</h2><div class="policy-body"><p>Recordings live in the extension's local library and in your Downloads folder. Delete a recording in the library and the space is freed immediately; the downloaded copy stays yours. Uninstalling the extension removes its local library, so download the recordings you want to keep first. Nothing is retained on our servers, because your audio is never sent to them.</p></div></article>
+<article class="policy-card" id="section-9"><h2><span class="policy-num">09</span>Changes to this policy</h2><div class="policy-body"><p>If this policy changes, the revised version will be published on this page with a new date. Material changes will be noted in the extension's release notes.</p></div></article>
+<article class="policy-card" id="section-10"><h2><span class="policy-num">10</span>Contact</h2><div class="policy-body"><p>Questions about this policy? Email <a href="mailto:support@annmax1983.com">support@annmax1983.com</a>.</p></div></article>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <img src="icons/icon128.png" alt="" width="30" height="30">
+      <div>TabTape<span class="copy">© 2026 TabTape</span></div>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="index.html" id="p-footer-home">Home</a>
+      <a href="privacy-policy.html" id="p-footer-privacy">Privacy Policy</a>
+      <a href="https://annmax1983.com/extensions/tabtape" target="_blank" rel="noopener" id="p-footer-site">Website</a>
+      <a href="mailto:support@annmax1983.com" id="p-footer-email">Email</a>
+    </nav>
+  </div>
+</footer>
+<script>
+const MODEL = {"langs":{"en":{"summary":"TabTape does NOT collect, store, or transmit any of your personal data. Recordings are captured, encoded and saved entirely on your device. The only network request the extension makes is the optional Pro licence check described in Section 4.","sections":[{"t":"Data Collection","html":"<p>TabTape does not collect any personal information, browsing data, page content or usage analytics. We do not use cookies, tracking pixels, fingerprinting or telemetry of any kind. Your recordings are yours: they are captured, encoded and stored on your device only.</p>"},{"t":"How TabTape Works","html":"<p>Everything happens inside your browser:</p><ul><li>Capture — when you press Record, chrome.tabCapture takes the audio of the tab you chose, and only that tab. Other tabs, system sounds and the microphone are not captured.</li><li>Encoding — a hidden offscreen document encodes the audio in about one-second blocks (MP3 with the bundled lamejs encoder, or raw WAV).</li><li>Storage — each block is written into the extension's local database (IndexedDB) as it arrives, so memory stays flat and a crash cannot take the whole recording.</li><li>Output — pressing Stop assembles the file, keeps it in the library and downloads it to Downloads/TabTape/ when auto-download is on.</li><li>No page reading — there is no content script: TabTape never sees the HTML, text or form fields of the page you record.</li></ul><div class=\"note\">At no point does audio or any other data leave your device.</div>"},{"t":"Permissions Explained","html":"<div class=\"table-wrap\"><table><thead><tr><th>Permission</th><th>Purpose</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>Take the audio of the one tab you asked to record</td></tr><tr><td><code>offscreen</code></td><td>Run the MP3/WAV encoder in a hidden document (MV3 service workers have no DOM)</td></tr><tr><td><code>downloads</code></td><td>Save the finished file to Downloads/TabTape/</td></tr><tr><td><code>storage</code></td><td>Settings and licence state on this device</td></tr><tr><td><code>unlimitedStorage</code></td><td>Keep long recordings in the local library without hitting the storage quota</td></tr><tr><td><code>alarms</code></td><td>Stop a recording that reaches the free 20-minute limit, even if the service worker was unloaded</td></tr><tr><td><code>activeTab</code></td><td>Know which tab you asked to record when you click the icon or press the shortcut</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>Licence activation and checks only — never audio</td></tr></tbody></table></div><div class=\"note\">TabTape requests only the minimum permissions the job needs. There is no &lt;all_urls&gt; host access, no content script, no history permission and no tabs permission.</div>"},{"t":"Third-Party Services & License Verification","html":"<p>TabTape does not connect to any third-party service, API, CDN or external server, and recording works entirely offline. The MP3 encoder (lamejs, LGPL) is bundled with the extension; nothing is fetched at runtime. The only exception is the optional Pro licence: free features make no network request at all. With a licence, the extension contacts our licence server (api.annmax1983.com) only to activate it, to re-verify it at most once every 2 hours when you open the popup, and to release it. These requests carry your licence key, a random install identifier, the plugin id and basic browser metadata (browser name/version, interface language, time zone, user agent) — never your recordings, page content or browsing data. Our licence server records the IP address of these requests solely for rate limiting and abuse prevention — never for profiling, advertising or sharing with third parties.</p>"},{"t":"Data Sharing","html":"<p>We do not share, sell, rent or trade any data with third parties because we do not collect any data in the first place.</p>"},{"t":"Children's Privacy","html":"<p>TabTape does not collect any personal information from any user, including children under the age of 13.</p>"},{"t":"What Is Captured — and What Is Not","html":"<ul><li>Only the audio of the tab you started recording on. Microphone input and system audio are never captured.</li><li>DRM-protected players (subscription video, some music services) keep their audio away from extensions by design; those pages record as silence. That is the platform's protection doing its job.</li><li>Browser-internal pages (chrome://, the Web Store, the New Tab page) cannot be captured. Start on a normal http or https page.</li><li>No transcription, no summaries, no AI. TabTape produces an audio file and stops there.</li></ul>"},{"t":"Data retention & deletion","html":"<p>Recordings live in the extension's local library and in your Downloads folder. Delete a recording in the library and the space is freed immediately; the downloaded copy stays yours. Uninstalling the extension removes its local library, so download the recordings you want to keep first. Nothing is retained on our servers, because your audio is never sent to them.</p>"},{"t":"Changes to this policy","html":"<p>If this policy changes, the revised version will be published on this page with a new date. Material changes will be noted in the extension's release notes.</p>"},{"t":"Contact","html":"<p>Questions about this policy? Email <a href=\"mailto:support@annmax1983.com\">support@annmax1983.com</a>.</p>"}]},"zh":{"summary":"TabTape 不会收集、存储或传输您的任何个人数据。录音的采集、编码和保存全部在您的设备本地完成。扩展唯一的网络请求是第 4 节所述的可选 Pro 授权检查。","sections":[{"t":"数据收集","html":"<p>TabTape 不收集任何个人信息、浏览数据、页面内容或使用分析。我们不使用 Cookie、追踪像素、浏览器指纹或任何形式的遥测。录音只属于你：采集、编码、存储全部在你的设备上完成。</p>"},{"t":"工作原理","html":"<p>一切都在您的浏览器内完成：</p><ul><li>采集 — 按下录制后，chrome.tabCapture 只取你选定的那个标签页的声音。其他标签页、系统声音和麦克风都不会被采集。</li><li>编码 — 隐藏的 offscreen 文档按约 1 秒分块编码（MP3 使用内置的 lamejs 编码器，WAV 为原始采样）。</li><li>存储 — 每个分块随到随写入扩展本地数据库（IndexedDB），内存占用恒定，崩溃也不会带走整段录音。</li><li>输出 — 按停止后组装文件，留在录音库；开启自动下载时同时保存到 Downloads/TabTape/。</li><li>不读页面 — 没有内容脚本：TabTape 看不到你所录页面的 HTML、文字或表单。</li></ul><div class=\"note\">在任何环节，音频和其他数据都不会离开您的设备。</div>"},{"t":"权限说明","html":"<div class=\"table-wrap\"><table><thead><tr><th>权限</th><th>用途</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>只采集你要求录制的那个标签页的声音</td></tr><tr><td><code>offscreen</code></td><td>在隐藏文档中运行 MP3/WAV 编码器（MV3 service worker 没有 DOM）</td></tr><tr><td><code>downloads</code></td><td>把完成的文件保存到 Downloads/TabTape/</td></tr><tr><td><code>storage</code></td><td>在本设备保存设置与授权状态</td></tr><tr><td><code>unlimitedStorage</code></td><td>长录音存进本地库时不撞存储配额</td></tr><tr><td><code>alarms</code></td><td>免费 20 分钟到点时强制停止录音（即使 service worker 已被卸载）</td></tr><tr><td><code>activeTab</code></td><td>点击图标或按快捷键时，知道你要录哪个标签页</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>仅用于授权激活与核对——绝不传输音频</td></tr></tbody></table></div><div class=\"note\">TabTape 只请求功能所必需的最低权限。没有 &lt;all_urls&gt; 全站访问，没有内容脚本，没有 history 权限，也没有 tabs 权限。</div>"},{"t":"第三方服务与授权验证","html":"<p>TabTape 不连接任何第三方服务、API、CDN 或外部服务器，录音完全离线运行。MP3 编码器（lamejs，LGPL）随扩展打包，运行时不加载任何外部代码。唯一的例外是可选的 Pro 授权：免费功能不发起任何网络请求。激活授权后，扩展仅联系授权服务器（api.annmax1983.com）完成激活、复验（打开弹窗时每 2 小时最多一次）与解绑。这些请求仅携带授权密钥、随机安装标识、插件标识和基础浏览器元数据（浏览器名称/版本、界面语言、时区、User-Agent），绝不包含您的录音、页面内容或浏览数据。授权服务器会记录这些请求的 IP 地址，仅用于限速与防滥用，不用于画像或广告，也不会共享给第三方。</p>"},{"t":"数据共享","html":"<p>我们不会与第三方共享、出售、出租或交易任何数据，因为我们根本不收集任何数据。</p>"},{"t":"儿童隐私","html":"<p>TabTape 不收集任何用户的个人信息，包括 13 岁以下的儿童。</p>"},{"t":"录什么，不录什么","html":"<ul><li>只录你开始录制的那个标签页的声音。麦克风输入和系统声音从不采集。</li><li>DRM 保护的播放器（订阅制视频、部分音乐服务）按设计不把声音开放给扩展，这些页面会录成静音。这是平台保护机制在起作用。</li><li>浏览器内部页面（chrome://、应用商店、新标签页）无法采集。请从普通 http 或 https 页面开始。</li><li>没有转写、没有摘要、没有 AI。TabTape 生成音频文件，仅此而已。</li></ul>"},{"t":"数据保留与删除","html":"<p>录音保存在扩展的本地录音库和你的下载文件夹中。在录音库里删除一条录音，空间立即释放；已下载的副本仍归你所有。卸载扩展会清除本地录音库，想保留的录音请先下载。我们的服务器不保留任何内容，因为你的音频从不会发送到那里。</p>"},{"t":"政策变更","html":"<p>如果本政策发生变更，修订后的版本会发布在本页并更新日期。重要变更会在扩展的版本说明中注明。</p>"},{"t":"联系我们","html":"<p>对本政策有疑问？请发邮件至 <a href=\"mailto:support@annmax1983.com\">support@annmax1983.com</a>。</p>"}]},"ja":{"summary":"TabTape は個人データを収集、保存、送信しません。録音の取得、エンコード、保存はすべてデバイス上で完結します。唯一のネットワーク通信は、セクション4に記載の任意のProライセンス確認です。","sections":[{"t":"データ収集","html":"<p>TabTape は個人情報、閲覧データ、ページ内容、使用分析を収集しません。Cookie、トラッキングピクセル、フィンガープリント、テレメトリは一切使用しません。録音はあなたのもの：取得もエンコードも保存も、すべてデバイス上で行われます。</p>"},{"t":"仕組み","html":"<p>すべてブラウザ内で完結します：</p><ul><li>取得 — 録音を押すと、chrome.tabCapture が選んだタブの音だけを取得します。他のタブ、システム音、マイクは取得されません。</li><li>エンコード — 非表示の offscreen ドキュメントが約 1 秒単位でエンコードします（MP3 は同梱の lamejs エンコーダー、WAV は無圧縮）。</li><li>保存 — ブロックは届くそばから拡張機能のローカルデータベース（IndexedDB）に書き込まれるため、メモリは一定で、クラッシュしても録音全体は失われません。</li><li>出力 — 停止を押すとファイルが組み立てられ、ライブラリに保存されます。自動ダウンロードがオンなら Downloads/TabTape/ にも保存されます。</li><li>ページは読まない — コンテンツスクリプトはありません。録音するページの HTML、テキスト、フォームを見ることは一切ありません。</li></ul><div class=\"note\">音声もその他のデータも、デバイスから離れることはありません。</div>"},{"t":"権限の説明","html":"<div class=\"table-wrap\"><table><thead><tr><th>権限</th><th>目的</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>録音を指示したひとつのタブの音声を取得</td></tr><tr><td><code>offscreen</code></td><td>非表示ドキュメントで MP3/WAV エンコーダーを実行（MV3 サービスワーカーには DOM がありません）</td></tr><tr><td><code>downloads</code></td><td>完成したファイルを Downloads/TabTape/ に保存</td></tr><tr><td><code>storage</code></td><td>設定とライセンス状態をこの端末に保存</td></tr><tr><td><code>unlimitedStorage</code></td><td>長い録音をローカルライブラリに保存しても容量上限に当たりません</td></tr><tr><td><code>alarms</code></td><td>無料の 20 分に達したら録音を停止（サービスワーカーがアンロードされていても）</td></tr><tr><td><code>activeTab</code></td><td>アイコンのクリックやショートカット時に、どのタブを録るか把握</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>ライセンスの有効化と確認のみ — 音声は送信しません</td></tr></tbody></table></div><div class=\"note\">TabTape は機能に必要な最小限の権限のみを要求します。&lt;all_urls&gt; の全サイトアクセスも、コンテンツスクリプトも、history 権限も、tabs 権限もありません。</div>"},{"t":"サードパーティサービスとライセンス検証","html":"<p>TabTape はサードパーティサービス、API、CDN、外部サーバーに接続しません。録音は完全にオフラインで動作します。MP3 エンコーダー（lamejs、LGPL）は拡張機能に同梱され、実行時に外部コードを読み込むことはありません。唯一の例外は任意のProライセンスです：無料機能は一切ネットワーク通信を行いません。ライセンスがある場合、拡張機能はライセンスサーバー（api.annmax1983.com）にのみ接続し、有効化・再確認（ポップアップを開いたとき、2時間に最大1回）・解除を行います。これらの通信に含まれるのはライセンスキー、ランダムなインストール識別子、プラグイン識別子、基本的なブラウザーメタデータ（ブラウザー名/バージョン、言語、タイムゾーン、User-Agent）のみで、録音やページ内容、閲覧データは含まれません。ライセンスサーバーはこれらのリクエストの IP アドレスを、レート制限と不正利用防止のみを目的として記録します。プロファイリング、広告、第三者提供には一切使用しません。</p>"},{"t":"データ共有","html":"<p>データを収集しないため、第三者とデータを共有、販売、貸与、取引することはありません。</p>"},{"t":"子供のプライバシー","html":"<p>TabTape は13歳未満の子供を含む、すべてのユーザーの個人情報を収集しません。</p>"},{"t":"録音するもの、しないもの","html":"<ul><li>録音を開始したタブの音だけです。マイク入力とシステム音は取得しません。</li><li>DRM で保護されたプレーヤー（定額制動画、一部の音楽サービス）は設計上、音声を拡張機能に開放しないため、そうしたページは無音で録れます。これはプラットフォームの保護機構が働いている結果です。</li><li>ブラウザ内部のページ（chrome://、アドオンサイト、新しいタブページ）は取得できません。通常の http または https ページから始めてください。</li><li>文字起こしも要約も AI もありません。音声ファイルを作って、そこで終わりです。</li></ul>"},{"t":"データの保存期間と削除","html":"<p>録音は拡張機能のローカルライブラリとダウンロードフォルダに保存されます。ライブラリで削除すれば容量は即座に空き、ダウンロード済みのコピーはそのまま残ります。アンインストールするとローカルライブラリは削除されるため、残したい録音は先にダウンロードしてください。音声がサーバーへ送信されることはないため、当方のサーバーには何も保持されません。</p>"},{"t":"ポリシーの変更","html":"<p>このポリシーを変更する場合は、改訂版をこのページに新しい日付で掲載します。重要な変更は拡張機能のリリースノートにも記載します。</p>"},{"t":"お問い合わせ","html":"<p>このポリシーについてのご質問は、<a href=\"mailto:support@annmax1983.com\">support@annmax1983.com</a> へメールしてください。</p>"}]},"de":{"summary":"TabTape sammelt, speichert oder überträgt KEINE persönlichen Daten. Aufnahmen werden vollständig auf Ihrem Gerät erfasst, kodiert und gespeichert. Die einzige Netzwerkanfrage ist die optionale Pro-Lizenzprüfung (siehe Abschnitt 4).","sections":[{"t":"Datenerfassung","html":"<p>TabTape erfasst keine persönlichen Informationen, Browsdaten, Seiteninhalte oder Nutzungsanalysen. Wir verwenden keine Cookies, Tracking-Pixel, Fingerprints oder Telemetrie. Ihre Aufnahmen gehören Ihnen: Erfassung, Kodierung und Speicherung geschehen ausschließlich auf Ihrem Gerät.</p>"},{"t":"So funktioniert TabTape","html":"<p>Alles geschieht in Ihrem Browser:</p><ul><li>Erfassung — wenn Sie auf Aufnahme drücken, nimmt chrome.tabCapture den Ton genau des Tabs, den Sie gewählt haben. Andere Tabs, Systemklänge und das Mikrofon werden nicht erfasst.</li><li>Kodierung — ein verstecktes Offscreen-Dokument kodiert den Ton in Blöcken von etwa einer Sekunde (MP3 mit dem mitgelieferten lamejs-Encoder, WAV unkomprimiert).</li><li>Speicherung — jeder Block wird sofort in die lokale Datenbank der Erweiterung (IndexedDB) geschrieben. Der Speicherbedarf bleibt konstant, und ein Absturz kann nicht die ganze Aufnahme mitnehmen.</li><li>Ausgabe — beim Stoppen wird die Datei zusammengesetzt, bleibt in der Bibliothek und landet bei aktiviertem Auto-Download in Downloads/TabTape/.</li><li>Kein Seitenlesen — es gibt kein Content-Skript: TabTape sieht weder HTML, Text noch Formularfelder der Seite, die Sie aufnehmen.</li></ul><div class=\"note\">Weder Audio noch andere Daten verlassen Ihr Gerät.</div>"},{"t":"Berechtigungen erklärt","html":"<div class=\"table-wrap\"><table><thead><tr><th>Berechtigung</th><th>Zweck</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>Den Ton des einen Tabs aufnehmen, den Sie aufzeichnen möchten</td></tr><tr><td><code>offscreen</code></td><td>Den MP3/WAV-Encoder in einem versteckten Dokument ausführen (MV3-Service-Worker haben kein DOM)</td></tr><tr><td><code>downloads</code></td><td>Die fertige Datei in Downloads/TabTape/ speichern</td></tr><tr><td><code>storage</code></td><td>Einstellungen und Lizenzstatus auf diesem Gerät</td></tr><tr><td><code>unlimitedStorage</code></td><td>Lange Aufnahmen in der lokalen Bibliothek speichern, ohne das Speicherlimit zu erreichen</td></tr><tr><td><code>alarms</code></td><td>Eine Aufnahme stoppen, die das kostenlose 20-Minuten-Limit erreicht — auch wenn der Service-Worker entladen wurde</td></tr><tr><td><code>activeTab</code></td><td>Beim Klick auf das Symbol oder das Tastenkürzel wissen, welcher Tab aufgenommen werden soll</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>Nur Lizenzaktivierung und -prüfung — niemals Audio</td></tr></tbody></table></div><div class=\"note\">TabTape fordert nur die Mindestberechtigungen an, die die Aufgabe braucht. Kein &lt;all_urls&gt;-Zugriff auf alle Seiten, kein Content-Skript, keine history-Berechtigung und keine tabs-Berechtigung.</div>"},{"t":"Drittanbieterdienste und Lizenzprüfung","html":"<p>TabTape verbindet sich nicht mit Drittanbieterdiensten, APIs, CDNs oder externen Servern; Aufnehmen funktioniert vollständig offline. Der MP3-Encoder (lamejs, LGPL) ist in der Erweiterung enthalten; zur Laufzeit wird nichts nachgeladen. Die einzige Ausnahme ist die optionale Pro-Lizenz: Kostenlose Funktionen senden keine Netzwerkanfrage. Mit einer Lizenz kontaktiert die Erweiterung unseren Lizenzserver (api.annmax1983.com) ausschließlich zum Aktivieren, zum Nachprüfen (höchstens einmal alle 2 Stunden beim Öffnen des Popups) und zum Freigeben. Diese Anfragen enthalten den Lizenzschlüssel, eine zufällige Installationskennung, die Plugin-Kennung und grundlegende Browser-Metadaten (Browser-Name/-Version, Sprache, Zeitzone, User-Agent) — niemals Ihre Aufnahmen, Seiteninhalte oder Browsdaten. Unser Lizenzserver protokolliert die IP-Adresse dieser Anfragen ausschließlich zur Ratenbegrenzung und Missbrauchsabwehr — niemals für Profiling, Werbung oder Weitergabe an Dritte.</p>"},{"t":"Datenweitergabe","html":"<p>Wir geben keine Daten weiter, verkaufen, vermieten oder handeln mit Dritten, da wir überhaupt keine Daten erheben.</p>"},{"t":"Datenschutz von Kindern","html":"<p>TabTape erfasst keine persönlichen Informationen von Nutzern, einschließlich Kindern unter 13 Jahren.</p>"},{"t":"Was aufgenommen wird — und was nicht","html":"<ul><li>Nur der Ton des Tabs, auf dem Sie die Aufnahme gestartet haben. Mikrofon und Systemaudio werden nie erfasst.</li><li>DRM-geschützte Player (Abo-Video, manche Musikdienste) halten ihren Ton konstruktionsbedingt von Erweiterungen fern; solche Seiten werden als Stille aufgenommen. Das ist der Schutz der Plattform, der seine Arbeit tut.</li><li>Browser-interne Seiten (chrome://, der Web Store, die Neue-Tab-Seite) können nicht erfasst werden. Starten Sie auf einer normalen http- oder https-Seite.</li><li>Keine Transkription, keine Zusammenfassungen, keine KI. TabTape erzeugt eine Audiodatei und hört dort auf.</li></ul>"},{"t":"Aufbewahrung und Löschung","html":"<p>Aufnahmen liegen in der lokalen Bibliothek der Erweiterung und in Ihrem Download-Ordner. Löschen Sie eine Aufnahme in der Bibliothek, wird der Platz sofort frei; die heruntergeladene Kopie bleibt Ihre. Beim Deinstallieren wird die lokale Bibliothek entfernt — laden Sie Aufnahmen, die Sie behalten möchten, vorher herunter. Auf unseren Servern wird nichts aufbewahrt, weil Ihr Audio nie dorthin gesendet wird.</p>"},{"t":"Änderungen dieser Erklärung","html":"<p>Wenn sich diese Erklärung ändert, wird die überarbeitete Fassung mit einem neuen Datum auf dieser Seite veröffentlicht. Wesentliche Änderungen werden in den Versionshinweisen der Erweiterung genannt.</p>"},{"t":"Kontakt","html":"<p>Fragen zu dieser Erklärung? Schreib an <a href=\"mailto:support@annmax1983.com\">support@annmax1983.com</a>.</p>"}]},"es":{"summary":"TabTape NO recopila, almacena ni transmite ningún dato personal. Las grabaciones se capturan, codifican y guardan íntegramente en tu dispositivo. La única solicitud de red es la verificación opcional de la licencia Pro (véase la sección 4).","sections":[{"t":"Recopilación de datos","html":"<p>TabTape no recopila información personal, datos de navegación, contenido de páginas ni analíticas de uso. No utilizamos cookies, píxeles de seguimiento, huellas digitales ni telemetría. Tus grabaciones son tuyas: se capturan, codifican y guardan solo en tu dispositivo.</p>"},{"t":"Cómo funciona TabTape","html":"<p>Todo ocurre dentro de tu navegador:</p><ul><li>Captura — al pulsar Grabar, chrome.tabCapture toma el audio de la pestaña que elegiste, y solo de esa. Las demás pestañas, los sonidos del sistema y el micrófono no se capturan.</li><li>Codificación — un documento offscreen oculto codifica el audio en bloques de aproximadamente un segundo (MP3 con el codificador lamejs incluido, o WAV sin comprimir).</li><li>Almacenamiento — cada bloque se escribe en la base de datos local de la extensión (IndexedDB) según llega, así la memoria se mantiene constante y un cierre inesperado no se lleva la grabación entera.</li><li>Salida — al pulsar Detener se ensambla el archivo, queda en la biblioteca y, si la descarga automática está activada, se guarda en Downloads/TabTape/.</li><li>Sin leer páginas — no hay script de contenido: TabTape nunca ve el HTML, el texto ni los campos de formulario de la página que grabas.</li></ul><div class=\"note\">En ningún momento el audio ni ningún otro dato sale de tu dispositivo.</div>"},{"t":"Permisos explicados","html":"<div class=\"table-wrap\"><table><thead><tr><th>Permiso</th><th>Propósito</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>Tomar el audio de la única pestaña que pediste grabar</td></tr><tr><td><code>offscreen</code></td><td>Ejecutar el codificador MP3/WAV en un documento oculto (los service workers MV3 no tienen DOM)</td></tr><tr><td><code>downloads</code></td><td>Guardar el archivo terminado en Downloads/TabTape/</td></tr><tr><td><code>storage</code></td><td>Ajustes y estado de la licencia en este dispositivo</td></tr><tr><td><code>unlimitedStorage</code></td><td>Guardar grabaciones largas en la biblioteca local sin alcanzar el límite de almacenamiento</td></tr><tr><td><code>alarms</code></td><td>Detener una grabación que alcanza el límite gratuito de 20 minutos, aunque el service worker se haya descargado</td></tr><tr><td><code>activeTab</code></td><td>Saber qué pestaña quieres grabar al hacer clic en el icono o pulsar el atajo</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>Solo activación y comprobación de la licencia — nunca audio</td></tr></tbody></table></div><div class=\"note\">TabTape solo solicita los permisos mínimos que la tarea necesita. Sin acceso &lt;all_urls&gt; a todos los sitios, sin script de contenido, sin permiso de historial y sin permiso tabs.</div>"},{"t":"Servicios de terceros y verificación de licencia","html":"<p>TabTape no se conecta a servicios de terceros, APIs, CDNs ni servidores externos; grabar funciona completamente sin conexión. El codificador MP3 (lamejs, LGPL) viene incluido en la extensión; nada se descarga en tiempo de ejecución. La única excepción es la licencia Pro opcional: las funciones gratuitas no realizan ninguna petición de red. Con una licencia, la extensión contacta con nuestro servidor de licencias (api.annmax1983.com) solo para activarla, reverificarla (como máximo una vez cada 2 horas al abrir el panel) y liberarla. Esas peticiones incluyen tu clave de licencia, un identificador de instalación aleatorio, el identificador del plugin y metadatos básicos del navegador (nombre/versión, idioma, zona horaria, User-Agent) — nunca tus grabaciones, el contenido de las páginas ni los datos de navegación. Nuestro servidor de licencias registra la dirección IP de estas solicitudes únicamente para limitar la tasa de peticiones y evitar abusos; nunca para elaborar perfiles, publicidad ni compartirla con terceros.</p>"},{"t":"Compartición de datos","html":"<p>No compartimos, vendemos, alquilamos ni intercambiamos datos con terceros porque no recopilamos ningún dato en primer lugar.</p>"},{"t":"Privacidad de menores","html":"<p>TabTape no recopila información personal de ningún usuario, incluidos menores de 13 años.</p>"},{"t":"Qué se graba — y qué no","html":"<ul><li>Solo el audio de la pestaña en la que iniciaste la grabación. La entrada del micrófono y el audio del sistema nunca se capturan.</li><li>Los reproductores con DRM (vídeo por suscripción, algunos servicios de música) mantienen su audio fuera del alcance de las extensiones por diseño; esas páginas se graban en silencio. Es la protección de la plataforma haciendo su trabajo.</li><li>Las páginas internas del navegador (chrome://, la Web Store, la página de nueva pestaña) no se pueden capturar. Empieza en una página http o https normal.</li><li>Sin transcripción, sin resúmenes, sin IA. TabTape produce un archivo de audio y se detiene ahí.</li></ul>"},{"t":"Conservación y eliminación de datos","html":"<p>Las grabaciones viven en la biblioteca local de la extensión y en tu carpeta de descargas. Elimina una grabación en la biblioteca y el espacio se libera al instante; la copia descargada sigue siendo tuya. Al desinstalar la extensión se elimina su biblioteca local, así que descarga antes las grabaciones que quieras conservar. No conservamos nada en nuestros servidores porque tu audio nunca se envía allí.</p>"},{"t":"Cambios en esta política","html":"<p>Si esta política cambia, la versión revisada se publicará en esta página con una nueva fecha. Los cambios importantes se indicarán en las notas de la versión de la extensión.</p>"},{"t":"Contacto","html":"<p>¿Preguntas sobre esta política? Escribe a <a href=\"mailto:support@annmax1983.com\">support@annmax1983.com</a>.</p>"}]},"fr":{"summary":"TabTape ne collecte, ne stocke ni ne transmet aucune donnée personnelle. Les enregistrements sont capturés, encodés et sauvegardés entièrement sur votre appareil. La seule requête réseau est la vérification facultative de la licence Pro (voir section 4).","sections":[{"t":"Collecte de données","html":"<p>TabTape ne collecte aucune information personnelle, donnée de navigation, contenu de page ou analyse d'utilisation. Nous n'utilisons pas de cookies, pixels de traçage, empreintes digitales ou télémétrie. Vos enregistrements sont à vous : capture, encodage et stockage se font uniquement sur votre appareil.</p>"},{"t":"Comment fonctionne TabTape","html":"<p>Tout se passe dans votre navigateur :</p><ul><li>Capture — quand vous appuyez sur Enregistrer, chrome.tabCapture prend le son de l'onglet que vous avez choisi, et seulement celui-là. Les autres onglets, les sons du système et le micro ne sont pas capturés.</li><li>Encodage — un document offscreen caché encode le son par blocs d'environ une seconde (MP3 avec l'encodeur lamejs fourni, ou WAV non compressé).</li><li>Stockage — chaque bloc est écrit dans la base de données locale de l'extension (IndexedDB) au fil de l'arrivée : la mémoire reste constante et une fermeture imprévue ne peut pas emporter tout l'enregistrement.</li><li>Sortie — à l'arrêt, le fichier est assemblé, conservé dans la bibliothèque et, si le téléchargement automatique est activé, enregistré dans Downloads/TabTape/.</li><li>Aucune lecture de page — il n'y a pas de script de contenu : TabTape ne voit jamais le HTML, le texte ni les champs de formulaire de la page que vous enregistrez.</li></ul><div class=\"note\">À aucun moment l'audio ou toute autre donnée ne quitte votre appareil.</div>"},{"t":"Autorisations expliquées","html":"<div class=\"table-wrap\"><table><thead><tr><th>Autorisation</th><th>But</th></tr></thead><tbody><tr><td><code>tabCapture</code></td><td>Prendre le son de l'unique onglet que vous avez demandé à enregistrer</td></tr><tr><td><code>offscreen</code></td><td>Exécuter l'encodeur MP3/WAV dans un document caché (les service workers MV3 n'ont pas de DOM)</td></tr><tr><td><code>downloads</code></td><td>Enregistrer le fichier terminé dans Downloads/TabTape/</td></tr><tr><td><code>storage</code></td><td>Réglages et état de la licence sur cet appareil</td></tr><tr><td><code>unlimitedStorage</code></td><td>Garder de longs enregistrements dans la bibliothèque locale sans atteindre le quota de stockage</td></tr><tr><td><code>alarms</code></td><td>Arrêter un enregistrement qui atteint la limite gratuite de 20 minutes, même si le service worker a été déchargé</td></tr><tr><td><code>activeTab</code></td><td>Savoir quel onglet vous voulez enregistrer quand vous cliquez sur l'icône ou utilisez le raccourci</td></tr><tr><td><code>https://api.annmax1983.com/*</code></td><td>Activation et vérification de la licence uniquement — jamais d'audio</td></tr></tbody></table></div><div class=\"note\">TabTape ne demande que les autorisations minimales nécessaires. Pas d'accès &lt;all_urls&gt; à tous les sites, pas de script de contenu, pas d'autorisation d'historique et pas d'autorisation tabs.</div>"},{"t":"Services tiers et vérification de licence","html":"<p>TabTape ne se connecte à aucun service tiers, API, CDN ou serveur externe ; l'enregistrement fonctionne entièrement hors ligne. L'encodeur MP3 (lamejs, LGPL) est fourni avec l'extension ; rien n'est téléchargé à l'exécution. La seule exception est la licence Pro facultative : les fonctions gratuites n'émettent aucune requête réseau. Avec une licence, l'extension contacte notre serveur de licences (api.annmax1983.com) uniquement pour l'activer, la revérifier (au plus une fois toutes les 2 heures à l'ouverture du panneau) et la libérer. Ces requêtes contiennent votre clé de licence, un identifiant d'installation aléatoire, l'identifiant du plugin et des métadonnées navigateur de base (nom/version, langue, fuseau horaire, User-Agent) — jamais vos enregistrements, le contenu des pages ni vos données de navigation. Notre serveur de licences enregistre l'adresse IP de ces requêtes uniquement pour limiter le débit et prévenir les abus — jamais pour du profilage, de la publicité ou un partage avec des tiers.</p>"},{"t":"Partage de données","html":"<p>Nous ne partageons, vendons, louons ni échangeons de données avec des tiers car nous ne collectons aucune donnée.</p>"},{"t":"Confidentialité des enfants","html":"<p>TabTape ne collecte aucune information personnelle d'un utilisateur, y compris les enfants de moins de 13 ans.</p>"},{"t":"Ce qui est enregistré — et ce qui ne l'est pas","html":"<ul><li>Uniquement le son de l'onglet sur lequel vous avez lancé l'enregistrement. L'entrée du micro et le son du système ne sont jamais capturés.</li><li>Les lecteurs protégés par DRM (vidéo par abonnement, certains services de musique) gardent leur son hors de portée des extensions par conception ; ces pages s'enregistrent en silence. C'est la protection de la plateforme qui fait son travail.</li><li>Les pages internes du navigateur (chrome://, le Web Store, la page Nouvel onglet) ne peuvent pas être capturées. Commencez sur une page http ou https normale.</li><li>Pas de transcription, pas de résumés, pas d'IA. TabTape produit un fichier audio et s'arrête là.</li></ul>"},{"t":"Conservation et suppression des données","html":"<p>Les enregistrements vivent dans la bibliothèque locale de l'extension et dans votre dossier de téléchargement. Supprimez un enregistrement dans la bibliothèque et l'espace est libéré immédiatement ; la copie téléchargée reste la vôtre. La désinstallation supprime la bibliothèque locale : téléchargez d'abord les enregistrements que vous voulez garder. Rien n'est conservé sur nos serveurs, car votre audio ne leur est jamais envoyé.</p>"},{"t":"Modifications de cette politique","html":"<p>Si cette politique change, la version révisée sera publiée sur cette page avec une nouvelle date. Les changements importants seront signalés dans les notes de version de l'extension.</p>"},{"t":"Contact","html":"<p>Des questions sur cette politique ? Écrivez à <a href=\"mailto:support@annmax1983.com\">support@annmax1983.com</a>.</p>"}]}}};
+const UI_ALL = {"en":{"privacyTitle":"Privacy Policy","home":"Home","onThisPage":"On this page","lastUpdated":"Last updated: November 2026","chips":["Recordings stay on your device","No analytics","No account","Licence optional"],"footerHome":"Home","footerSite":"Website","footerEmail":"Email"},"zh":{"privacyTitle":"隐私政策","home":"首页","onThisPage":"本页目录","lastUpdated":"最后更新：2026 年 11 月","chips":["录音留在你的设备上","无统计追踪","无需账号","授权可选"],"footerHome":"首页","footerSite":"官网","footerEmail":"邮件"},"ja":{"privacyTitle":"プライバシーポリシー","home":"ホーム","onThisPage":"目次","lastUpdated":"最終更新：2026年11月","chips":["録音は端末上に残る","分析なし","アカウント不要","ライセンスは任意"],"footerHome":"ホーム","footerSite":"公式サイト","footerEmail":"メール"},"de":{"privacyTitle":"Datenschutzerklärung","home":"Startseite","onThisPage":"Auf dieser Seite","lastUpdated":"Zuletzt aktualisiert: November 2026","chips":["Aufnahmen bleiben auf deinem Gerät","Keine Analyse","Kein Konto","Lizenz optional"],"footerHome":"Startseite","footerSite":"Website","footerEmail":"E-Mail"},"es":{"privacyTitle":"Política de privacidad","home":"Inicio","onThisPage":"En esta página","lastUpdated":"Última actualización: noviembre de 2026","chips":["Las grabaciones se quedan en tu dispositivo","Sin analíticas","Sin cuenta","Licencia opcional"],"footerHome":"Inicio","footerSite":"Sitio web","footerEmail":"Correo"},"fr":{"privacyTitle":"Politique de confidentialité","home":"Accueil","onThisPage":"Sur cette page","lastUpdated":"Dernière mise à jour : novembre 2026","chips":["Les enregistrements restent sur votre appareil","Aucune analyse","Sans compte","Licence facultative"],"footerHome":"Accueil","footerSite":"Site web","footerEmail":"E-mail"}};
+const CONFIG = {"name":"TabTape","icon":"icons/icon128.png","site":"https://annmax1983.com/extensions/tabtape"};
+const LANG_KEY = "vkt-tabtape-lang";
+(function () {
+  "use strict";
+
+  var select = document.getElementById("p-lang");
+  var observer = null;
+  var ui = function (lang) { return UI_ALL[lang] || UI_ALL.en; };
+
+  function esc(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value == null ? "" : value;
+  }
+
+  function detect() {
+    var codes = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+    for (var i = 0; i < codes.length; i++) {
+      var code = String(codes[i] || "").toLowerCase();
+      if (code.indexOf("zh") === 0) return "zh";
+      if (code.indexOf("ja") === 0) return "ja";
+      if (code.indexOf("de") === 0) return "de";
+      if (code.indexOf("es") === 0) return "es";
+      if (code.indexOf("fr") === 0) return "fr";
+      if (code.indexOf("en") === 0) return "en";
+    }
+    return "en";
+  }
+
+  function initToc() {
+    if (observer) observer.disconnect();
+    var links = Array.prototype.slice.call(document.querySelectorAll("#p-toc a"));
+    var cards = Array.prototype.slice.call(document.querySelectorAll(".policy-card"));
+    if (!links.length || !cards.length || typeof IntersectionObserver === "undefined") return;
+
+    function activate(id) {
+      links.forEach(function (link) {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+      });
+    }
+
+    observer = new IntersectionObserver(function (entries) {
+      var visible = entries.filter(function (entry) { return entry.isIntersecting; });
+      if (visible.length) activate(visible[0].target.id);
+    }, { rootMargin: "-18% 0px -68% 0px", threshold: [0, 1] });
+
+    cards.forEach(function (card) { observer.observe(card); });
+    if (links[0]) links[0].classList.add("active");
+  }
+
+  function render(lang) {
+    var data = MODEL.langs[lang];
+    if (!data) return;
+    var u = ui(lang);
+
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+    document.title = CONFIG.name + " — " + u.privacyTitle;
+
+    setText("p-eyebrow", u.privacyTitle);
+    setText("p-h1", CONFIG.name);
+    setText("p-h1-sub", u.privacyTitle);
+    setText("p-updated", u.lastUpdated);
+    setText("p-toc-title", u.onThisPage);
+
+    var summary = document.getElementById("p-summary");
+    if (summary) summary.innerHTML = data.summary || "";
+
+    var chips = document.getElementById("p-chips");
+    if (chips) {
+      chips.innerHTML = u.chips.map(function (chip) {
+        return '<span class="chip">' + esc(chip) + "</span>";
+      }).join("");
+    }
+
+    setText("p-footer-home", u.footerHome);
+    setText("p-footer-privacy", u.privacyTitle);
+    setText("p-footer-site", u.footerSite);
+    setText("p-footer-email", u.footerEmail || "Email");
+
+    var toc = document.getElementById("p-toc");
+    var sections = document.getElementById("p-sections");
+    if (!toc || !sections) return;
+    toc.innerHTML = "";
+    sections.innerHTML = "";
+
+    data.sections.forEach(function (section, index) {
+      var number = String(index + 1).padStart(2, "0");
+      var id = "section-" + (index + 1);
+
+      var link = document.createElement("a");
+      link.href = "#" + id;
+      link.innerHTML = "<span>" + number + "</span>" + esc(section.t);
+      toc.appendChild(link);
+
+      var card = document.createElement("article");
+      card.className = "policy-card";
+      card.id = id;
+      card.innerHTML = '<h2><span class="policy-num">' + number + "</span>" + esc(section.t) + '</h2><div class="policy-body">' + section.html + "</div>";
+      sections.appendChild(card);
+    });
+
+    initToc();
+  }
+
+  function storedLang() {
+    try { return localStorage.getItem(LANG_KEY); } catch (error) { return null; }
+  }
+
+  function remember(lang) {
+    try { localStorage.setItem(LANG_KEY, lang); } catch (error) { /* storage can be blocked */ }
+  }
+
+  initToc();
+
+  if (select) {
+    var saved = storedLang();
+    var initial = saved && MODEL.langs[saved] ? saved : detect();
+    if (!MODEL.langs[initial]) initial = "en";
+    select.value = initial;
+    if (initial !== "en") render(initial);
+    select.addEventListener("change", function () {
+      remember(select.value);
+      render(select.value);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+})();
+
+</script>
+</body>
+</html>
