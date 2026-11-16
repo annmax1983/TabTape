@@ -57,6 +57,7 @@ Chrome and Edge (Manifest V3, Chrome 116+). Firefox is not supported: it has no 
 ```bash
 npm test        # node --test: pure logic, MP3 encoder smoke, background mocks, i18n coverage
 npm run build   # terser + zip → publish/tabtape-v<version>.zip
+npm run icons   # regenerate icons/*.png (rounded-tile artwork, no dev dependency)
 ```
 
 `npm run build` minifies every runtime script (the AudioWorklet processor included), copies `vendor/lame.min.js` byte for byte, and leaves the unminified `vendor/lame.js` out of the package. A minify failure or a reference to a file that is not in the package aborts the build without writing a zip.
